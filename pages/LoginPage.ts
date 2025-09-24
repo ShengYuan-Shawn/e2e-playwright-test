@@ -16,26 +16,71 @@ export class LoginPage {
     this.loginErrorMessage = page.locator('[data-test="error"]');
   }
 
-  async verifyLoginPageUI() {
+  async verifyLoginPage() {
     await this.usernameInput.isVisible();
     await this.passwordInput.isVisible();
     await this.loginButton.isVisible();
   }
 
-  async loginInvalidUser() {
-    await this.usernameInput.fill(
+  async inputRandomUsername() {
+    var randomUsername =
       faker.person.firstName().toLowerCase +
-        "_" +
-        faker.person.lastName().toLowerCase
-    );
-    await this.passwordInput.fill(faker.internet.password({ length: 8 }));
+      "_" +
+      faker.person.lastName().toLowerCase;
+
+    await this.usernameInput.isVisible();
+    await this.usernameInput.fill(randomUsername);
+  }
+
+  async inputValidUsername(username) {
+    await this.usernameInput.isVisible();
+    await this.usernameInput.fill(username);
+  }
+
+  async clearUsernameInput() {
+    await this.usernameInput.clear();
+  }
+
+  async inputRandomPassword() {
+    var randomPassword = faker.internet.password({ length: 8 });
+
+    await this.passwordInput.isVisible();
+    await this.passwordInput.fill(randomPassword);
+  }
+
+  async inputValidPassword(password) {
+    await this.passwordInput.isVisible();
+    await this.passwordInput.fill(password);
+  }
+
+  async clearPasswordInput() {
+    await this.passwordInput.clear();
+  }
+
+  async loginUser() {
     await this.loginButton.click();
+  }
 
-    await this.page.waitForTimeout(1000);
-
+  async errorMessageValidation(errorType?: string) {
+    await this.page.waitForTimeout(5000);
     await this.loginErrorMessage.isVisible();
-    await expect(this.loginErrorMessage).toHaveText(
-      "Epic sadface: Username and password do not match any user in this service"
-    );
+
+    if (errorType && errorType.toLowerCase() === "password") {
+      await expect(this.loginErrorMessage).toHaveText(
+        "Epic sadface: Password is required"
+      );
+    } else if (errorType && errorType.toLowerCase() === "username") {
+      await expect(this.loginErrorMessage).toHaveText(
+        "Epic sadface: Username is required"
+      );
+    } else if (errorType && errorType.toLowerCase() === "locked") {
+      await expect(this.loginErrorMessage).toHaveText(
+        "Epic sadface: Sorry, this user has been locked out."
+      );
+    } else {
+      await expect(this.loginErrorMessage).toHaveText(
+        "Epic sadface: Username and password do not match any user in this service"
+      );
+    }
   }
 }
