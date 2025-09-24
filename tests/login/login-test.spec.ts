@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
-import { CommonUtils } from "../utils/commonUtils";
-import { LoginPage } from "../pages/LoginPage";
-import { HomePage } from "../pages/HomePage";
+import { CommonUtils } from "../../utils/commonUtils";
+import { LoginPage } from "../../pages/LoginPage";
+import { HomePage } from "../../pages/HomePage";
 
 test.describe("Login Functionality", () => {
   const baseURL = process.env.BASE_URL || "https://www.saucedemo.com/";
