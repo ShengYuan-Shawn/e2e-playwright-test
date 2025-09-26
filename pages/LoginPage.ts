@@ -22,7 +22,7 @@ export class LoginPage {
     await this.loginButton.isVisible();
   }
 
-  async inputRandomUsername() {
+  async enterRandomUsername() {
     var randomUsername =
       faker.person.firstName().toLowerCase +
       "_" +
@@ -32,37 +32,42 @@ export class LoginPage {
     await this.usernameInput.fill(randomUsername);
   }
 
-  async inputValidUsername(username) {
+  async enterValidUsername(username: string) {
+    await this.page.waitForTimeout(2000);
     await this.usernameInput.isVisible();
     await this.usernameInput.fill(username);
   }
 
-  async clearUsernameInput() {
+  async clearUsernameField() {
+    await this.usernameInput.isVisible();
     await this.usernameInput.clear();
   }
 
-  async inputRandomPassword() {
+  async enterRandomPassword() {
     var randomPassword = faker.internet.password({ length: 8 });
 
     await this.passwordInput.isVisible();
     await this.passwordInput.fill(randomPassword);
   }
 
-  async inputValidPassword(password) {
+  async enterValidPassword(password: string) {
+    await this.page.waitForTimeout(2000);
     await this.passwordInput.isVisible();
     await this.passwordInput.fill(password);
   }
 
-  async clearPasswordInput() {
+  async clearPasswordField() {
+    await this.passwordInput.isVisible();
     await this.passwordInput.clear();
   }
 
-  async loginUser() {
+  async clickLoginButton() {
+    await this.loginButton.isVisible();
     await this.loginButton.click();
   }
 
   async errorMessageValidation(errorType?: string) {
-    await this.page.waitForTimeout(5000);
+    await this.page.waitForTimeout(6000);
     await this.loginErrorMessage.isVisible();
 
     if (errorType && errorType.toLowerCase() === "password") {
