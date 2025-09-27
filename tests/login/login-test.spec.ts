@@ -13,7 +13,7 @@ test.describe("Login Functionality", () => {
       await loginPage.clearUsernameField();
       await loginPage.enterRandomUsername();
       await loginPage.clickLoginButton();
-      await loginPage.errorMessageValidation("password");
+      await loginPage.verifyErrorMessage("password");
 
       await loginPage.clearUsernameField();
 
@@ -21,7 +21,7 @@ test.describe("Login Functionality", () => {
       await loginPage.clearPasswordField();
       await loginPage.enterRandomPassword();
       await loginPage.clickLoginButton();
-      await loginPage.errorMessageValidation("username");
+      await loginPage.verifyErrorMessage("username");
 
       await loginPage.clearPasswordField();
 
@@ -29,7 +29,7 @@ test.describe("Login Functionality", () => {
       await loginPage.enterRandomUsername();
       await loginPage.enterRandomPassword();
       await loginPage.clickLoginButton();
-      await loginPage.errorMessageValidation();
+      await loginPage.verifyErrorMessage();
     }
   );
 
@@ -40,7 +40,7 @@ test.describe("Login Functionality", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await loginPage.errorMessageValidation("locked");
+      await loginPage.verifyErrorMessage("locked");
     }
   );
 
@@ -51,7 +51,7 @@ test.describe("Login Functionality", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await homePage.verifyHomePage();
+      await homePage.verifyHomePageHeader();
     }
   );
 });
