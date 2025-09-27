@@ -1,86 +1,97 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { LocatorsFactory } from "../factory/LocatorsFactory";
 import { faker } from "@faker-js/faker";
 
 export class LoginPage {
+  private static readonly LOGIN_ERROR_MESSAGES = {
+    PASSWORD_REQUIRED: "Epic sadface: Password is required",
+    USERNAME_REQUIRED: "Epic sadface: Username is required",
+    USER_LOCKED: "Epic sadface: Sorry, this user has been locked out.",
+    INVALID_CREDENTIALS:
+      "Epic sadface: Username and password do not match any user in this service",
+  } as const;
+
   readonly page: Page;
+  readonly loginLogo: Locator;
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly loginErrorMessage: Locator;
 
   constructor(page: Page) {
+    const Login = LocatorsFactory.LOGIN_PAGE;
+
     this.page = page;
-    this.usernameInput = page.locator("#user-name");
-    this.passwordInput = page.locator("#password");
-    this.loginButton = page.locator("#login-button");
-    this.loginErrorMessage = page.locator('[data-test="error"]');
+    this.loginLogo = page.locator(Login.LOGIN_LOGO);
+    this.usernameInput = page.locator(Login.USERNAME_INPUT);
+    this.passwordInput = page.locator(Login.PASSWORD_INPUT);
+    this.loginButton = page.locator(Login.LOGIN_BUTTON);
+    this.loginErrorMessage = page.locator(Login.ERROR_MESSAGE);
   }
 
   async verifyLoginPage() {
-    await this.usernameInput.isVisible();
-    await this.passwordInput.isVisible();
-    await this.loginButton.isVisible();
+    await expect(this.loginLogo).toBeVisible();
+    await expect(this.usernameInput).toBeVisible();
+    await expect(this.passwordInput).toBeVisible();
+    await expect(this.loginButton).toBeVisible();
   }
 
-  async inputRandomUsername() {
-    var randomUsername =
-      faker.person.firstName().toLowerCase +
+  async enterRandomUsername() {
+    let randomUsername =
+      faker.person.firstName().toLowerCase() +
       "_" +
-      faker.person.lastName().toLowerCase;
+      faker.person.lastName().toLowerCase();
 
-    await this.usernameInput.isVisible();
+    await expect(this.usernameInput).toBeVisible();
     await this.usernameInput.fill(randomUsername);
   }
 
-  async inputValidUsername(username) {
-    await this.usernameInput.isVisible();
+  async enterValidUsername(username: string) {
+    await expect(this.usernameInput).toBeVisible();
     await this.usernameInput.fill(username);
   }
 
-  async clearUsernameInput() {
+  async clearUsernameField() {
+    await expect(this.usernameInput).toBeVisible();
     await this.usernameInput.clear();
   }
 
-  async inputRandomPassword() {
-    var randomPassword = faker.internet.password({ length: 8 });
+  async enterRandomPassword() {
+    let randomPassword = faker.internet.password({ length: 8 });
 
-    await this.passwordInput.isVisible();
+    await expect(this.passwordInput).toBeVisible();
     await this.passwordInput.fill(randomPassword);
   }
 
-  async inputValidPassword(password) {
-    await this.passwordInput.isVisible();
+  async enterValidPassword(password: string) {
+    await expect(this.passwordInput).toBeVisible();
     await this.passwordInput.fill(password);
   }
 
-  async clearPasswordInput() {
+  async clearPasswordField() {
+    await expect(this.passwordInput).toBeVisible();
     await this.passwordInput.clear();
   }
 
-  async loginUser() {
+  async clickLoginButton() {
+    await expect(this.loginButton).toBeVisible();
     await this.loginButton.click();
   }
 
-  async errorMessageValidation(errorType?: string) {
-    await this.page.waitForTimeout(5000);
-    await this.loginErrorMessage.isVisible();
+  async verifyErrorMessage(errorType?: "password" | "username" | "locked") {
+    await expect(this.loginErrorMessage).toBeVisible();
 
-    if (errorType && errorType.toLowerCase() === "password") {
-      await expect(this.loginErrorMessage).toHaveText(
-        "Epic sadface: Password is required"
-      );
-    } else if (errorType && errorType.toLowerCase() === "username") {
-      await expect(this.loginErrorMessage).toHaveText(
-        "Epic sadface: Username is required"
-      );
-    } else if (errorType && errorType.toLowerCase() === "locked") {
-      await expect(this.loginErrorMessage).toHaveText(
-        "Epic sadface: Sorry, this user has been locked out."
-      );
-    } else {
-      await expect(this.loginErrorMessage).toHaveText(
-        "Epic sadface: Username and password do not match any user in this service"
-      );
-    }
+    // Mapped Error Message With Key
+    const errorMessage = {
+      password: LoginPage.LOGIN_ERROR_MESSAGES.PASSWORD_REQUIRED,
+      username: LoginPage.LOGIN_ERROR_MESSAGES.USERNAME_REQUIRED,
+      locked: LoginPage.LOGIN_ERROR_MESSAGES.USER_LOCKED,
+    };
+
+    const expectedMessage = errorType
+      ? errorMessage[errorType]
+      : LoginPage.LOGIN_ERROR_MESSAGES.INVALID_CREDENTIALS;
+
+    await expect(this.loginErrorMessage).toHaveText(expectedMessage);
   }
 }
