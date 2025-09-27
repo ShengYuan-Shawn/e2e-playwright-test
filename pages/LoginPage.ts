@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { LocatorsFactory } from "../factory/LocatorsFactory";
 import { faker } from "@faker-js/faker";
 
 export class LoginPage {
@@ -11,20 +12,25 @@ export class LoginPage {
   } as const;
 
   readonly page: Page;
+  readonly loginLogo: Locator;
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly loginErrorMessage: Locator;
 
   constructor(page: Page) {
+    const Login = LocatorsFactory.LOGIN_PAGE;
+
     this.page = page;
-    this.usernameInput = page.locator("#user-name");
-    this.passwordInput = page.locator("#password");
-    this.loginButton = page.locator("#login-button");
-    this.loginErrorMessage = page.locator('[data-test="error"]');
+    this.loginLogo = page.locator(Login.LOGIN_LOGO);
+    this.usernameInput = page.locator(Login.USERNAME_INPUT);
+    this.passwordInput = page.locator(Login.PASSWORD_INPUT);
+    this.loginButton = page.locator(Login.LOGIN_BUTTON);
+    this.loginErrorMessage = page.locator(Login.ERROR_MESSAGE);
   }
 
   async verifyLoginPage() {
+    await expect(this.loginLogo).toBeVisible();
     await expect(this.usernameInput).toBeVisible();
     await expect(this.passwordInput).toBeVisible();
     await expect(this.loginButton).toBeVisible();

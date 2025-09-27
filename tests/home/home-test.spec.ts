@@ -1,16 +1,16 @@
 import { test } from "@playwright/test";
 import { testSetup } from "../../fixtures/Base";
 
-test.describe("Home Functionality", () => {
+test.describe("Home Page", () => {
   testSetup("Verify Navigation Menu", async ({ loginPage, homePage }) => {
     await loginPage.enterValidUsername(process.env.VALID_USER as string);
     await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
     await loginPage.clickLoginButton();
 
     await homePage.verifyHomePageHeader();
-    await homePage.clickHamburgerMenu();
+    await homePage.openMenu();
     await homePage.verifyNavigationList();
-    await homePage.clickCloseButton();
+    await homePage.closeMenu();
   });
 
   testSetup(

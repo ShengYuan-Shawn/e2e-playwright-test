@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import { testSetup } from "../../fixtures/Base";
 
-test.describe("Login Functionality", () => {
+test.describe("Login Page", () => {
   testSetup("Verify Login Page UI", async ({ loginPage }) => {
     await loginPage.verifyLoginPage();
   });

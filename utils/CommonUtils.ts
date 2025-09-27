@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 
 export class CommonUtils {
   readonly page: Page;
@@ -12,8 +12,10 @@ export class CommonUtils {
   }
 
   async captureScreenshot() {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const screenshotName = `screenshots_${timestamp}`;
     await this.page.screenshot({
-      path: "screenshots/fullpage_screenshot.png",
+      path: `screenshots/${screenshotName}`,
       fullPage: true,
     });
   }

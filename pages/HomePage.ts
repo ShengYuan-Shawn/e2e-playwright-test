@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { CommonUtils } from "../utils/CommonUtils";
+import { LocatorsFactory } from "../factory/LocatorsFactory";
 
 export class HomePage {
   private static readonly NAVIGATION_ITEMS = [
@@ -17,27 +18,32 @@ export class HomePage {
   readonly page: Page;
   readonly commonUtils: CommonUtils;
   readonly hamburgerButton: Locator;
-  readonly navigationMenu: Locator;
-  readonly closeButton: Locator;
   readonly textLogo: Locator;
   readonly cartButton: Locator;
-  readonly productFilter: Locator;
+  readonly navigationMenu: Locator;
+  readonly closeButton: Locator;
+  readonly productText: Locator;
+  readonly productFilterButton: Locator;
   readonly productPrice: Locator;
-  readonly bottomFooter: Locator;
+  readonly pageFooter: Locator;
   readonly termsText: Locator;
 
   constructor(page: Page) {
+    const Base = LocatorsFactory.BASE_PAGE;
+    const Home = LocatorsFactory.HOME_PAGE;
+
     this.page = page;
     this.commonUtils = new CommonUtils(page);
-    this.hamburgerButton = page.locator(".bm-burger-button");
-    this.navigationMenu = page.locator(".bm-menu");
-    this.closeButton = page.locator("#react-burger-cross-btn");
-    this.textLogo = page.locator(".app_logo");
-    this.cartButton = page.locator(".shopping_cart_link");
-    this.productFilter = page.locator(".product_sort_container");
-    this.productPrice = page.locator(".inventory_item_price");
-    this.bottomFooter = page.locator(".footer");
-    this.termsText = page.locator(".footer_copy");
+    this.hamburgerButton = page.locator(Base.HAMBURGER_BUTTON);
+    this.textLogo = page.locator(Base.TEXT_LOGO);
+    this.cartButton = page.locator(Base.CART_BUTTON);
+    this.navigationMenu = page.locator(Base.NAVIGATION_MENU);
+    this.closeButton = page.locator(Base.CLOSE_BUTTON);
+    this.productText = page.locator(Base.PAGE_TITLE);
+    this.productFilterButton = page.locator(Home.PRODUCT_FILTER_BUTTON);
+    this.productPrice = page.locator(Home.PRODUCT_PRICE);
+    this.pageFooter = page.locator(Base.PAGE_FOOTER);
+    this.termsText = page.locator(Base.TERMS_TEXT);
   }
 
   // Dynamic Locator Handler
@@ -56,10 +62,15 @@ export class HomePage {
   async verifyHomePageHeader() {
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
+    await expect(this.textLogo).toHaveText('Swag Labs');
     await expect(this.cartButton).toBeVisible();
+
+    await expect(this.productText).toBeVisible();
+    await expect(this.productText).toHaveText("Products");
+    await expect(this.productFilterButton).toBeVisible();
   }
 
-  async clickHamburgerMenu() {
+  async openMenu() {
     await expect(this.hamburgerButton).toBeVisible();
     await this.hamburgerButton.click();
   }
@@ -71,14 +82,14 @@ export class HomePage {
     }
   }
 
-  async clickCloseButton() {
+  async closeMenu() {
     await expect(this.closeButton).toBeVisible();
     await this.closeButton.click();
   }
 
   async verifyProductFilter() {
-    await expect(this.productFilter).toBeVisible();
-    await this.productFilter.click();
+    await expect(this.productFilterButton).toBeVisible();
+    await this.productFilterButton.click();
     for (const item of HomePage.FILTER_OPTIONS) {
       await expect(this.productFilterListItem(item)).toBeAttached();
       await this.verifyFilterOptionText(item);
@@ -99,11 +110,11 @@ export class HomePage {
   }
 
   async selectFilterOption(option: "az" | "za" | "lohi" | "hilo") {
-    await expect(this.productFilter).toBeVisible();
-    await this.productFilter.click();
+    await expect(this.productFilterButton).toBeVisible();
+    await this.productFilterButton.click();
 
     await expect(this.productFilterListItem(option)).toBeAttached();
-    await this.productFilter.selectOption(option);
+    await this.productFilterButton.selectOption(option);
     await this.page.waitForTimeout(2500);
   }
 
@@ -137,7 +148,7 @@ export class HomePage {
 
   async verifyFooter() {
     await this.commonUtils.scrollToBottom();
-    await expect(this.bottomFooter).toBeVisible();
+    await expect(this.pageFooter).toBeVisible();
     for (const item of HomePage.SOCIAL_ITEMS) {
       await expect(this.socialListItem(item)).toBeVisible();
     }
