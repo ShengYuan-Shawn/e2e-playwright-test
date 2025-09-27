@@ -11,6 +11,9 @@ export class HomePage {
   private static readonly FILTER_OPTIONS = ["az", "za", "lohi", "hilo"];
   private static readonly SOCIAL_ITEMS = ["twitter", "facebook", "linkedin"];
 
+  private static readonly COPYRIGHT_TEXT =
+    "© 2025 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy";
+
   readonly page: Page;
   readonly commonUtils: CommonUtils;
   readonly hamburgerButton: Locator;
@@ -19,6 +22,7 @@ export class HomePage {
   readonly textLogo: Locator;
   readonly cartButton: Locator;
   readonly productFilter: Locator;
+  readonly productPrice: Locator;
   readonly bottomFooter: Locator;
   readonly termsText: Locator;
 
@@ -31,6 +35,7 @@ export class HomePage {
     this.textLogo = page.locator(".app_logo");
     this.cartButton = page.locator(".shopping_cart_link");
     this.productFilter = page.locator(".product_sort_container");
+    this.productPrice = page.locator(".inventory_item_price");
     this.bottomFooter = page.locator(".footer");
     this.termsText = page.locator(".footer_copy");
   }
@@ -99,6 +104,35 @@ export class HomePage {
 
     await expect(this.productFilterListItem(option)).toBeAttached();
     await this.productFilter.selectOption(option);
+    await this.page.waitForTimeout(2500);
+  }
+
+  async verifyProductListSequence(
+    // Validates product list sorting order - defaults to ascending if not specified
+    expectedOrder: "ascending" | "descending" = "ascending"
+  ) {
+    const itemPrices = await this.productPrice.allTextContents();
+    const numericPrice = itemPrices.map((price) =>
+      parseFloat(price.replace(/[$,\s]/g, ""))
+    );
+
+    expect(this.isCorrectOrder(numericPrice, expectedOrder)).toBeTruthy();
+  }
+
+  private isCorrectOrder(
+    prices: number[],
+    order: "ascending" | "descending"
+  ): boolean {
+    // Compare adjacent elements to verify sort order (iterate to n-1 to avoid index out of bounds)
+    for (let i = 0; i < prices.length - 1; i++) {
+      if (order === "ascending" && prices[i] > prices[i + 1]) {
+        return false;
+      }
+      if (order === "descending" && prices[i] < prices[i + 1]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   async verifyFooter() {
@@ -108,8 +142,6 @@ export class HomePage {
       await expect(this.socialListItem(item)).toBeVisible();
     }
     await expect(this.termsText).toBeVisible();
-    await expect(this.termsText).toHaveText(
-      "© 2025 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy"
-    );
+    await expect(this.termsText).toHaveText(HomePage.COPYRIGHT_TEXT);
   }
 }

@@ -34,6 +34,9 @@ test.describe("Home Functionality", () => {
 
       await homePage.verifyHomePageHeader();
       await homePage.selectFilterOption('lohi');
+      await homePage.verifyProductListSequence('ascending');
+      await homePage.selectFilterOption('hilo');
+      await homePage.verifyProductListSequence('descending');
     }
   );
 
