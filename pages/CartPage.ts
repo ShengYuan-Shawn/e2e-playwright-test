@@ -1,7 +1,7 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { CommonUtils } from "../utils/CommonUtils";
 import { Navigation } from "../utils/Navigation";
-import { LocatorsFactory } from "../factory/LocatorsFactory";
+import { LocatorsFactory, ProductKey } from "../factory/LocatorsFactory";
 
 export class CartPage {
   readonly page: Page;
@@ -12,6 +12,8 @@ export class CartPage {
   readonly cartButton: Locator;
   readonly navigationMenu: Locator;
   readonly closeButton: Locator;
+  readonly productName: Locator;
+  readonly productDesc: Locator;
   readonly productText: Locator;
   readonly cartQuantityText: Locator;
   readonly cartDescText: Locator;
@@ -21,6 +23,7 @@ export class CartPage {
 
   constructor(page: Page) {
     const Base = LocatorsFactory.BASE_PAGE;
+    const Home = LocatorsFactory.HOME_PAGE;
     const Cart = LocatorsFactory.CART_PAGE;
 
     this.page = page;
@@ -31,12 +34,14 @@ export class CartPage {
     this.cartButton = page.locator(Base.CART_BUTTON);
     this.navigationMenu = page.locator(Base.NAVIGATION_MENU);
     this.closeButton = page.locator(Base.CLOSE_BUTTON);
+    this.productName = page.locator(Home.PRODUCT_NAME);
+    this.productDesc = page.locator(Home.PRODUCT_DESC);
     this.productText = page.locator(Base.PAGE_TITLE);
-    this.cartQuantityText = page.locator(Cart.CART_QUANTITY_TEXT),
-    this.cartDescText = page.locator(Cart.CART_DESC_TEXT),
-    this.cartFooter = page.locator(Cart.CART_FOOTER),
-    this.continueShoppingButton = page.locator(Cart.CONTINUE_SHOPPING_BUTTON),
-    this.checkoutButton = page.locator(Cart.CHECKOUT_BUTTON)
+    this.cartQuantityText = page.locator(Cart.CART_QUANTITY_TEXT);
+    this.cartDescText = page.locator(Cart.CART_DESC_TEXT);
+    this.cartFooter = page.locator(Cart.CART_FOOTER);
+    this.continueShoppingButton = page.locator(Cart.CONTINUE_SHOPPING_BUTTON);
+    this.checkoutButton = page.locator(Cart.CHECKOUT_BUTTON);
   }
 
   async verifyEmptyCartPage() {
@@ -44,19 +49,27 @@ export class CartPage {
 
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
-    await expect(this.textLogo).toHaveText('Swag Labs');
+    await expect(this.textLogo).toHaveText("Swag Labs");
     await expect(this.cartButton).toBeVisible();
 
     await expect(this.productText).toBeVisible();
-    await expect(this.productText).toHaveText('Your Cart');
+    await expect(this.productText).toHaveText("Your Cart");
 
     await expect(this.cartQuantityText).toBeVisible();
-    await expect(this.cartQuantityText).toHaveText('QTY');
+    await expect(this.cartQuantityText).toHaveText("QTY");
     await expect(this.cartDescText).toBeVisible();
-    await expect(this.cartDescText).toHaveText('Description');
+    await expect(this.cartDescText).toHaveText("Description");
 
     await expect(this.cartFooter).toBeVisible();
     await expect(this.continueShoppingButton).toBeVisible();
     await expect(this.checkoutButton).toBeVisible();
+  }
+
+  async addProductToCart(productKey: ProductKey) {
+    const product = LocatorsFactory.PRODUCT_SELECTORS[productKey];
+    const addToCartButton = this.page.locator(product);
+
+    await expect(addToCartButton).toBeVisible();
+    await addToCartButton.click();
   }
 }

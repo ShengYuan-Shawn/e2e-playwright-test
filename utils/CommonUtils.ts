@@ -15,7 +15,7 @@ export class CommonUtils {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const screenshotName = `screenshots_${timestamp}`;
     await this.page.screenshot({
-      path: `screenshots/${screenshotName}`,
+      path: `screenshots/${screenshotName}.png`,
       fullPage: true,
     });
   }

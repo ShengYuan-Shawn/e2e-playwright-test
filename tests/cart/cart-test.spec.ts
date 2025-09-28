@@ -15,5 +15,15 @@ test.describe("Cart Page", () => {
     }
   );
 
-  testSetup("Verify Add Product To Cart & Check Product On Cart", () => {});
+  testSetup(
+    "Verify Add Product To Cart & Check Cart List",
+    async ({ loginPage, homePage, cartPage }) => {
+      await loginPage.enterValidUsername(process.env.VALID_USER as string);
+      await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
+      await loginPage.clickLoginButton();
+
+      await homePage.verifyHomePageHeader();
+      await cartPage.addProductToCart("BACKPACK");
+    }
+  );
 });
