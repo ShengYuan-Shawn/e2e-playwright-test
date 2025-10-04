@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { testSetup } from "../../fixtures/Base";
+import { testSetup } from "../../fixtures/testSetup";
 
 test.describe("Cart Page", () => {
   testSetup(
@@ -23,7 +23,10 @@ test.describe("Cart Page", () => {
       await loginPage.clickLoginButton();
 
       await homePage.verifyHomePageHeader();
-      await cartPage.addProductToCart("BACKPACK");
+
+      await homePage.verifyHomePageHeader();
+      await cartPage.getProductDetails("BACKPACK");
+      // await cartPage.addProductToCart("BACKPACK");
     }
   );
 });

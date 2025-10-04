@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { LocatorsFactory } from "../factory/LocatorsFactory";
+import { LocatorsFactory } from "../factory/locatorsFactory";
 
 export class Navigation {
   readonly page: Page;

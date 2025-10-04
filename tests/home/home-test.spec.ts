@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { testSetup } from "../../fixtures/Base";
+import { testSetup } from "../../fixtures/testSetup";
 
 test.describe("Home Page", () => {
   testSetup("Verify Navigation Menu", async ({ loginPage, homePage }) => {

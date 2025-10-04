@@ -1,6 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { CommonUtils } from "../utils/CommonUtils";
-import { LocatorsFactory } from "../factory/LocatorsFactory";
+import { CommonUtils } from "../utils/commonUtils";
+import { LocatorsFactory } from "../factory/locatorsFactory";
 
 export class HomePage {
   private static readonly NAVIGATION_ITEMS = [

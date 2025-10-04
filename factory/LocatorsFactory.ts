@@ -4,6 +4,7 @@ export class LocatorsFactory {
     HAMBURGER_BUTTON: ".bm-burger-button",
     TEXT_LOGO: ".app_logo",
     CART_BUTTON: ".shopping_cart_link",
+    CART_BADGE: ".shopping_cart_badge",
     NAVIGATION_MENU: ".bm-menu",
     CLOSE_BUTTON: "#react-burger-cross-btn",
     PAGE_FOOTER: ".footer",
@@ -20,18 +21,19 @@ export class LocatorsFactory {
 
   static readonly HOME_PAGE = {
     PRODUCT_FILTER_BUTTON: ".product_sort_container",
+    PRODUCT_IMAGE: ".inventory_item_img",
     PRODUCT_NAME: ".inventory_item_name",
     PRODUCT_DESC: ".inventory_item_desc",
     PRODUCT_PRICE: ".inventory_item_price",
   } as const;
 
   static readonly PRODUCT_SELECTORS = {
-    BACKPACK: "#add-to-cart-sauce-labs-backpack",
-    BIKE_LIGHT: "#add-to-cart-sauce-labs-bike-light",
-    BOLT_SHIRT: "#add-to-cart-sauce-labs-bolt-t-shirt",
-    FLEECE_JACKET: "#add-to-cart-sauce-labs-fleece-jacket",
-    ONESIE: "#add-to-cart-sauce-labs-onesie",
-    RED_SHIRT: "#add-to-cart-test.allthethings()-t-shirt-(red)",
+    BACKPACK: "xpath=//button[@id='add-to-cart-sauce-labs-backpack']",
+    BIKE_LIGHT: "xpath=//button[@id='add-to-cart-sauce-labs-bike-light']",
+    BOLT_SHIRT: "xpath=//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']",
+    FLEECE_JACKET: "xpath=//button[@id='add-to-cart-sauce-labs-fleece-jacket']",
+    ONESIE: "xpath=//button[@id='add-to-cart-sauce-labs-onesie']",
+    RED_SHIRT: "xpath=//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']",
   } as const;
 
   static readonly CART_PAGE = {
