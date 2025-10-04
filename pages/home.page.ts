@@ -1,8 +1,12 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { BasePage } from "./base.page";
 import { CommonUtils } from "../utils/commonUtils";
 import { LocatorsFactory } from "../factory/locatorsFactory";
 
-export class HomePage {
+export class HomePage extends BasePage {
+  readonly productFilterButton: Locator;
+  readonly productPrice: Locator;
+
   private static readonly NAVIGATION_ITEMS = [
     "inventory",
     "about",
@@ -15,35 +19,13 @@ export class HomePage {
   private static readonly COPYRIGHT_TEXT =
     "© 2025 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy";
 
-  readonly page: Page;
-  readonly commonUtils: CommonUtils;
-  readonly hamburgerButton: Locator;
-  readonly textLogo: Locator;
-  readonly cartButton: Locator;
-  readonly navigationMenu: Locator;
-  readonly closeButton: Locator;
-  readonly productText: Locator;
-  readonly productFilterButton: Locator;
-  readonly productPrice: Locator;
-  readonly pageFooter: Locator;
-  readonly termsText: Locator;
-
   constructor(page: Page) {
-    const Base = LocatorsFactory.BASE_PAGE;
+    super(page); // Initialize BasePage
+
     const Home = LocatorsFactory.HOME_PAGE;
 
-    this.page = page;
-    this.commonUtils = new CommonUtils(page);
-    this.hamburgerButton = page.locator(Base.HAMBURGER_BUTTON);
-    this.textLogo = page.locator(Base.TEXT_LOGO);
-    this.cartButton = page.locator(Base.CART_BUTTON);
-    this.navigationMenu = page.locator(Base.NAVIGATION_MENU);
-    this.closeButton = page.locator(Base.CLOSE_BUTTON);
-    this.productText = page.locator(Base.PAGE_TITLE);
     this.productFilterButton = page.locator(Home.PRODUCT_FILTER_BUTTON);
     this.productPrice = page.locator(Home.PRODUCT_PRICE);
-    this.pageFooter = page.locator(Base.PAGE_FOOTER);
-    this.termsText = page.locator(Base.TERMS_TEXT);
   }
 
   // Dynamic Locator Handler
@@ -62,7 +44,7 @@ export class HomePage {
   async verifyHome() {
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
-    await expect(this.textLogo).toHaveText('Swag Labs');
+    await expect(this.textLogo).toHaveText("Swag Labs");
     await expect(this.cartButton).toBeVisible();
 
     await expect(this.productText).toBeVisible();

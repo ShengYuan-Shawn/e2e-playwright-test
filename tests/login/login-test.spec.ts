@@ -13,7 +13,7 @@ test.describe("Login Page", () => {
       await loginPage.clearUsernameField();
       await loginPage.enterRandomUsername();
       await loginPage.clickLoginButton();
-      await loginPage.verifyErrorMessage("password");
+      await loginPage.verifyErrorMessage("PASSWORD_REQUIRED");
 
       await loginPage.clearUsernameField();
 
@@ -21,7 +21,7 @@ test.describe("Login Page", () => {
       await loginPage.clearPasswordField();
       await loginPage.enterRandomPassword();
       await loginPage.clickLoginButton();
-      await loginPage.verifyErrorMessage("username");
+      await loginPage.verifyErrorMessage("USERNAME_REQUIRED");
 
       await loginPage.clearPasswordField();
 
@@ -29,18 +29,18 @@ test.describe("Login Page", () => {
       await loginPage.enterRandomUsername();
       await loginPage.enterRandomPassword();
       await loginPage.clickLoginButton();
-      await loginPage.verifyErrorMessage();
+      await loginPage.verifyErrorMessage("INVALID_CREDENTIALS");
     }
   );
 
   testSetup(
     "Verify Login With Locked Username & Password",
     async ({ loginPage }) => {
-      await loginPage.enterValidPassword(process.env.LOCKED_USER as string);
+      await loginPage.enterValidUsername(process.env.LOCKED_USER as string);
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await loginPage.verifyErrorMessage("locked");
+      await loginPage.verifyErrorMessage("USER_LOCKED");
     }
   );
 

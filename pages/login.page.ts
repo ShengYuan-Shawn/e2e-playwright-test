@@ -3,20 +3,20 @@ import { LocatorsFactory } from "../factory/locatorsFactory";
 import { faker } from "@faker-js/faker";
 
 export class LoginPage {
-  private static readonly LOGIN_ERROR_MESSAGES = {
-    PASSWORD_REQUIRED: "Epic sadface: Password is required",
-    USERNAME_REQUIRED: "Epic sadface: Username is required",
-    USER_LOCKED: "Epic sadface: Sorry, this user has been locked out.",
-    INVALID_CREDENTIALS:
-      "Epic sadface: Username and password do not match any user in this service",
-  } as const;
-
   readonly page: Page;
   readonly loginLogo: Locator;
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly loginErrorMessage: Locator;
+
+  private static readonly ERROR_MESSAGES = {
+    PASSWORD_REQUIRED: "Epic sadface: Password is required",
+    USERNAME_REQUIRED: "Epic sadface: Username is required",
+    USER_LOCKED: "Epic sadface: Sorry, this user has been locked out.",
+    INVALID_CREDENTIALS:
+      "Epic sadface: Username and password do not match any user in this service",
+  } as const;
 
   constructor(page: Page) {
     const Login = LocatorsFactory.LOGIN_PAGE;
@@ -78,20 +78,10 @@ export class LoginPage {
     await this.loginButton.click();
   }
 
-  async verifyErrorMessage(errorType?: "password" | "username" | "locked") {
+  async verifyErrorMessage(errorType: keyof typeof LoginPage.ERROR_MESSAGES) {
     await expect(this.loginErrorMessage).toBeVisible();
-
-    // Mapped Error Message With Key
-    const errorMessage = {
-      password: LoginPage.LOGIN_ERROR_MESSAGES.PASSWORD_REQUIRED,
-      username: LoginPage.LOGIN_ERROR_MESSAGES.USERNAME_REQUIRED,
-      locked: LoginPage.LOGIN_ERROR_MESSAGES.USER_LOCKED,
-    };
-
-    const expectedMessage = errorType
-      ? errorMessage[errorType]
-      : LoginPage.LOGIN_ERROR_MESSAGES.INVALID_CREDENTIALS;
-
-    await expect(this.loginErrorMessage).toHaveText(expectedMessage);
+    await expect(this.loginErrorMessage).toContainText(
+      LoginPage.ERROR_MESSAGES[errorType]
+    );
   }
 }
