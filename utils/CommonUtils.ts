@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, Locator } from "@playwright/test";
 
 export class CommonUtils {
   readonly page: Page;
@@ -7,8 +7,12 @@ export class CommonUtils {
     this.page = page;
   }
 
-  async goTo(URL: string) {
-    await this.page.goto(URL);
+  async goTo(url: string) {
+    await this.page.goto(url);
+  }
+
+  async getText(locator: Locator): Promise<string> {
+    return (await locator.textContent()) ?? "";
   }
 
   async captureScreenshot() {

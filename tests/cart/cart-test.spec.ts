@@ -26,7 +26,7 @@ test.describe("Cart Page", () => {
 
       await homePage.verifyHomePageHeader();
       await cartPage.getProductDetails("BACKPACK");
-      // await cartPage.addProductToCart("BACKPACK");
+      await cartPage.addProductToCart("BACKPACK");
     }
   );
 });

@@ -11,6 +11,7 @@ export class CartPage {
   readonly hamburgerButton: Locator;
   readonly textLogo: Locator;
   readonly cartButton: Locator;
+  readonly cartBadge: Locator;
   readonly navigationMenu: Locator;
   readonly closeButton: Locator;
   readonly productText: Locator;
@@ -30,6 +31,7 @@ export class CartPage {
     this.hamburgerButton = page.locator(Base.HAMBURGER_BUTTON);
     this.textLogo = page.locator(Base.TEXT_LOGO);
     this.cartButton = page.locator(Base.CART_BUTTON);
+    this.cartBadge = page.locator(Base.CART_BADGE);
     this.navigationMenu = page.locator(Base.NAVIGATION_MENU);
     this.closeButton = page.locator(Base.CLOSE_BUTTON);
     this.productText = page.locator(Base.PAGE_TITLE);
@@ -62,140 +64,68 @@ export class CartPage {
   }
 
   async getProductDetails(productKey: ProductKey) {
-    const ProductMap = ProductDetails.PRODUCT_MAP;
-
-    // Retrieve Product xPath From Maps
-    const product = LocatorsFactory.PRODUCT_SELECTORS[productKey];
+    // Retrieve Product Details xPath From Maps
+    const productDetails = ProductDetails.PRODUCT_MAP[productKey];
+    const productAddButton =
+      LocatorsFactory.PRODUCT_SELECTORS[productKey].ADD_TO_CART_BUTTON;
 
     // Frame Product Name, Desc, Price xPath
     const productImage = this.page.locator(
-      product +
+      productAddButton +
         "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_img']"
     );
     const productName = this.page.locator(
-      product +
+      productAddButton +
         "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_name ']"
     );
     const productDesc = this.page.locator(
-      product +
+      productAddButton +
         "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_desc']"
     );
     const productPrice = this.page.locator(
-      product + "/preceding-sibling::div[@class='inventory_item_price']"
+      productAddButton +
+        "/preceding-sibling::div[@class='inventory_item_price']"
     );
-    const addToCartButton = this.page.locator(product);
 
-    switch (productKey) {
-      case "BACKPACK": {
-        await expect(productImage).toBeVisible();
+    // Convert to locator
+    const addToCartButton = this.page.locator(productAddButton);
 
-        await expect(productName).toBeVisible();
-        await expect(productName).toContainText(ProductMap.BACKPACK.NAME);
+    await expect(productImage).toBeVisible();
 
-        await expect(productDesc).toBeVisible();
-        await expect(productDesc).toContainText(ProductMap.BACKPACK.DESC);
+    await expect(productName).toBeVisible();
+    await expect(productName).toContainText(productDetails.NAME);
 
-        await expect(productPrice).toBeVisible();
-        await expect(productPrice).toContainText(ProductMap.BACKPACK.PRICE);
+    await expect(productDesc).toBeVisible();
+    await expect(productDesc).toContainText(productDetails.DESC);
 
-        await expect(addToCartButton).toBeVisible();
-        await expect(addToCartButton).toContainText("Add to cart");
-        break;
-      }
-      case "BIKE_LIGHT": {
-        await expect(productImage).toBeVisible();
+    await expect(productPrice).toBeVisible();
+    await expect(productPrice).toContainText(productDetails.PRICE);
 
-        await expect(productName).toBeVisible();
-        await expect(productName).toContainText(ProductMap.BIKE_LIGHT.NAME);
-
-        await expect(productDesc).toBeVisible();
-        await expect(productDesc).toContainText(ProductMap.BIKE_LIGHT.DESC);
-
-        await expect(productPrice).toBeVisible();
-        await expect(productPrice).toContainText(ProductMap.BIKE_LIGHT.PRICE);
-
-        await expect(addToCartButton).toBeVisible();
-        await expect(addToCartButton).toContainText("Add to cart");
-        break;
-      }
-      case "BOLT_SHIRT": {
-        await expect(productImage).toBeVisible();
-
-        await expect(productName).toBeVisible();
-        await expect(productName).toContainText(ProductMap.BOLT_SHIRT.NAME);
-
-        await expect(productDesc).toBeVisible();
-        await expect(productDesc).toContainText(ProductMap.BOLT_SHIRT.DESC);
-
-        await expect(productPrice).toBeVisible();
-        await expect(productPrice).toContainText(ProductMap.BOLT_SHIRT.PRICE);
-
-        await expect(addToCartButton).toBeVisible();
-        await expect(addToCartButton).toContainText("Add to cart");
-        break;
-      }
-      case "FLEECE_JACKET": {
-        await expect(productImage).toBeVisible();
-
-        await expect(productName).toBeVisible();
-        await expect(productName).toContainText(ProductMap.FLEECE_JACKET.NAME);
-
-        await expect(productDesc).toBeVisible();
-        await expect(productDesc).toContainText(ProductMap.FLEECE_JACKET.DESC);
-
-        await expect(productPrice).toBeVisible();
-        await expect(productPrice).toContainText(
-          ProductMap.FLEECE_JACKET.PRICE
-        );
-
-        await expect(addToCartButton).toBeVisible();
-        await expect(addToCartButton).toContainText("Add to cart");
-        break;
-      }
-      case "ONESIE": {
-        await expect(productImage).toBeVisible();
-
-        await expect(productName).toBeVisible();
-        await expect(productName).toContainText(ProductMap.ONESIE.NAME);
-
-        await expect(productDesc).toBeVisible();
-        await expect(productDesc).toContainText(ProductMap.ONESIE.DESC);
-
-        await expect(productPrice).toBeVisible();
-        await expect(productPrice).toContainText(ProductMap.ONESIE.PRICE);
-
-        await expect(addToCartButton).toBeVisible();
-        await expect(addToCartButton).toContainText("Add to cart");
-        break;
-      }
-      case "RED_SHIRT": {
-        await expect(productImage).toBeVisible();
-
-        await expect(productName).toBeVisible();
-        await expect(productName).toContainText(ProductMap.RED_SHIRT.NAME);
-
-        await expect(productDesc).toBeVisible();
-        await expect(productDesc).toContainText(ProductMap.RED_SHIRT.DESC);
-
-        await expect(productPrice).toBeVisible();
-        await expect(productPrice).toContainText(ProductMap.RED_SHIRT.PRICE);
-
-        await expect(addToCartButton).toBeVisible();
-        await expect(addToCartButton).toContainText("Add to cart");
-        break;
-      }
-      default: {
-        throw new Error(`Invalid product key: ${productKey}`);
-        break;
-      }
-    }
+    await expect(addToCartButton).toBeVisible();
+    await expect(addToCartButton).toHaveText("Add to cart");
   }
 
   async addProductToCart(productKey: ProductKey) {
-    const product = LocatorsFactory.PRODUCT_SELECTORS[productKey];
-    const addToCartButton = this.page.locator(product);
+    const productAddButton =
+      LocatorsFactory.PRODUCT_SELECTORS[productKey].ADD_TO_CART_BUTTON;
+    const productRemoveButton =
+      LocatorsFactory.PRODUCT_SELECTORS[productKey].REMOVE_BUTTON;
+
+    const addToCartButton = this.page.locator(productAddButton);
+    const removeFromCartButton = this.page.locator(productRemoveButton);
 
     await expect(addToCartButton).toBeVisible();
     await addToCartButton.click();
+
+    await expect(removeFromCartButton).toBeVisible();
+    await expect(removeFromCartButton).toContainText("Remove");
+
+    await expect(this.cartBadge).toBeVisible();
+
+    const getCurrentCartValue = await this.commonUtils.getText(this.cartBadge);
+
+    if (parseInt(getCurrentCartValue ?? "0") != 0) {
+      await expect(this.cartBadge).toContainText("1");
+    }
   }
 }
