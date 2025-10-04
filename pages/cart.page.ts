@@ -1,20 +1,9 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { CommonUtils } from "../utils/commonUtils";
-import { Navigation } from "../utils/navigationUtils";
+import { BasePage } from "./base.page";
 import { LocatorsFactory, ProductKey } from "../factory/locatorsFactory";
 import { ProductDetails } from "../factory/productDetails";
 
-export class CartPage {
-  readonly page: Page;
-  readonly commonUtils: CommonUtils;
-  readonly navigation: Navigation;
-  readonly hamburgerButton: Locator;
-  readonly textLogo: Locator;
-  readonly cartButton: Locator;
-  readonly cartBadge: Locator;
-  readonly navigationMenu: Locator;
-  readonly closeButton: Locator;
-  readonly productText: Locator;
+export class CartPage extends BasePage {
   readonly cartQuantityText: Locator;
   readonly cartDescText: Locator;
   readonly cartFooter: Locator;
@@ -22,19 +11,10 @@ export class CartPage {
   readonly checkoutButton: Locator;
 
   constructor(page: Page) {
-    const Base = LocatorsFactory.BASE_PAGE;
+    super(page); // Initialize BasePage
+
     const Cart = LocatorsFactory.CART_PAGE;
 
-    this.page = page;
-    this.commonUtils = new CommonUtils(page);
-    this.navigation = new Navigation(page);
-    this.hamburgerButton = page.locator(Base.HAMBURGER_BUTTON);
-    this.textLogo = page.locator(Base.TEXT_LOGO);
-    this.cartButton = page.locator(Base.CART_BUTTON);
-    this.cartBadge = page.locator(Base.CART_BADGE);
-    this.navigationMenu = page.locator(Base.NAVIGATION_MENU);
-    this.closeButton = page.locator(Base.CLOSE_BUTTON);
-    this.productText = page.locator(Base.PAGE_TITLE);
     this.cartQuantityText = page.locator(Cart.CART_QUANTITY_TEXT);
     this.cartDescText = page.locator(Cart.CART_DESC_TEXT);
     this.cartFooter = page.locator(Cart.CART_FOOTER);
@@ -43,7 +23,7 @@ export class CartPage {
   }
 
   async verifyEmptyCart() {
-    await this.navigation.goToCart();
+    await this.goToCart();
 
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
@@ -130,6 +110,6 @@ export class CartPage {
   }
 
   async verifyLatestItem() {
-    await this.navigation.goToCart();
+    await this.goToCart();
   }
 }
