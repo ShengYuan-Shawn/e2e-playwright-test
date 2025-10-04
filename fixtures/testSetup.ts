@@ -1,14 +1,14 @@
 import { test } from "@playwright/test";
-import { CommonUtils } from "../utils/CommonUtils";
-import { LoginPage } from "../pages/LoginPage";
-import { HomePage } from "../pages/HomePage";
-import { CartPage } from "../pages/CartPage";
+import { CommonUtils } from "../utils/commonUtils";
+import { LoginPage } from "../pages/login.page";
+import { HomePage } from "../pages/home.page";
+import { CartPage } from "../pages/cart.page";
 
 export interface TestFixtures {
   commonUtils: CommonUtils;
   loginPage: LoginPage;
   homePage: HomePage;
-  cartPage: CartPage
+  cartPage: CartPage;
 }
 
 export const baseURL = process.env.BASE_URL || "https://www.saucedemo.com";
@@ -31,10 +31,10 @@ export const testSetup = test.extend<TestFixtures>({
     await use(homePage);
   },
 
-  cartPage: async ({ page, commonUtils}, use) => {
+  cartPage: async ({ page, commonUtils }, use) => {
     const cartPage = new CartPage(page);
     await use(cartPage);
-  }
+  },
 });
 
 testSetup.afterEach(async ({ page, context }) => {

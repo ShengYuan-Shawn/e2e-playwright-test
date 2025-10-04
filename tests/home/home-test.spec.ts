@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { testSetup } from "../../fixtures/Base";
+import { testSetup } from "../../fixtures/testSetup";
 
 test.describe("Home Page", () => {
   testSetup("Verify Navigation Menu", async ({ loginPage, homePage }) => {
@@ -7,7 +7,7 @@ test.describe("Home Page", () => {
     await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
     await loginPage.clickLoginButton();
 
-    await homePage.verifyHomePageHeader();
+    await homePage.verifyHome();
     await homePage.openMenu();
     await homePage.verifyNavigationList();
     await homePage.closeMenu();
@@ -20,7 +20,7 @@ test.describe("Home Page", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await homePage.verifyHomePageHeader();
+      await homePage.verifyHome();
       await homePage.verifyProductFilter();
     }
   );
@@ -32,7 +32,7 @@ test.describe("Home Page", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await homePage.verifyHomePageHeader();
+      await homePage.verifyHome();
       await homePage.selectFilterOption('lohi');
       await homePage.verifyProductListSequence('ascending');
       await homePage.selectFilterOption('hilo');
@@ -45,7 +45,7 @@ test.describe("Home Page", () => {
     await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
     await loginPage.clickLoginButton();
 
-    await homePage.verifyHomePageHeader();
+    await homePage.verifyHome();
     await homePage.verifyFooter();
   });
 });

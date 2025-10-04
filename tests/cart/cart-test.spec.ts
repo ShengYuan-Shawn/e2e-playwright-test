@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { testSetup } from "../../fixtures/Base";
+import { testSetup } from "../../fixtures/testSetup";
 
 test.describe("Cart Page", () => {
   testSetup(
@@ -9,11 +9,24 @@ test.describe("Cart Page", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await homePage.verifyHomePageHeader();
+      await homePage.verifyHome();
 
-      await cartPage.verifyEmptyCartPage();
+      await cartPage.verifyEmptyCart();
     }
   );
 
-  testSetup("Verify Add Product To Cart & Check Product On Cart", () => {});
+  testSetup(
+    "Verify Add Product To Cart & Check Cart List",
+    async ({ loginPage, homePage, cartPage }) => {
+      await loginPage.enterValidUsername(process.env.VALID_USER as string);
+      await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
+      await loginPage.clickLoginButton();
+
+      await homePage.verifyHome();
+
+      await cartPage.getProductDetails("BACKPACK");
+      await cartPage.addProductToCart("BACKPACK");
+      await cartPage.verifyLatestItem();
+    }
+  );
 });

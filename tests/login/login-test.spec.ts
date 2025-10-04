@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { testSetup } from "../../fixtures/Base";
+import { testSetup } from "../../fixtures/testSetup";
 
 test.describe("Login Page", () => {
   testSetup("Verify Login Page UI", async ({ loginPage }) => {
@@ -51,7 +51,7 @@ test.describe("Login Page", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await homePage.verifyHomePageHeader();
+      await homePage.verifyHome();
     }
   );
 });
