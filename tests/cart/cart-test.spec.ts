@@ -9,9 +9,9 @@ test.describe("Cart Page", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await homePage.verifyHomePageHeader();
+      await homePage.verifyHome();
 
-      await cartPage.verifyEmptyCartPage();
+      await cartPage.verifyEmptyCart();
     }
   );
 
@@ -22,11 +22,11 @@ test.describe("Cart Page", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await homePage.verifyHomePageHeader();
+      await homePage.verifyHome();
 
-      await homePage.verifyHomePageHeader();
       await cartPage.getProductDetails("BACKPACK");
       await cartPage.addProductToCart("BACKPACK");
+      await cartPage.verifyLatestItem();
     }
   );
 });

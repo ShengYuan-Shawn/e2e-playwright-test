@@ -42,7 +42,7 @@ export class CartPage {
     this.checkoutButton = page.locator(Cart.CHECKOUT_BUTTON);
   }
 
-  async verifyEmptyCartPage() {
+  async verifyEmptyCart() {
     await this.navigation.goToCart();
 
     await expect(this.hamburgerButton).toBeVisible();
@@ -127,5 +127,9 @@ export class CartPage {
     if (parseInt(getCurrentCartValue ?? "0") != 0) {
       await expect(this.cartBadge).toContainText("1");
     }
+  }
+
+  async verifyLatestItem() {
+    await this.navigation.goToCart();
   }
 }

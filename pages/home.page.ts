@@ -59,7 +59,7 @@ export class HomePage {
     return this.page.locator(`.social_${item}`);
   }
 
-  async verifyHomePageHeader() {
+  async verifyHome() {
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
     await expect(this.textLogo).toHaveText('Swag Labs');
