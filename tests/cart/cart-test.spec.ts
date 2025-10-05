@@ -31,7 +31,9 @@ test.describe("Cart Page", () => {
       await cartPage.goToHome();
       await cartPage.goToCart();
 
-      await cartPage.removeItemFromCart();
+      await cartPage.removeItemFromCart("BACKPACK");
+      await cartPage.verifyEmptyCart();
+      await cartPage.goToHome();
     }
   );
 });

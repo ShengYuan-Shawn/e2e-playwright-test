@@ -41,6 +41,7 @@ export class CartPage extends BasePage {
     await expect(this.textLogo).toBeVisible();
     await expect(this.textLogo).toHaveText("Swag Labs");
     await expect(this.cartButton).toBeVisible();
+    await expect(this.cartBadge).not.toBeVisible();
 
     await expect(this.productText).toBeVisible();
     await expect(this.productText).toHaveText("Your Cart");
@@ -187,7 +188,17 @@ export class CartPage extends BasePage {
     await expect(this.checkoutButton).toBeVisible();
   }
 
-  async removeItemFromCart() {
-    
+  async removeItemFromCart(productKey: ProductKey) {
+    const productRemoveButton =
+      LocatorsFactory.PRODUCT_SELECTORS[productKey].REMOVE_BUTTON;
+
+    const removeFromCartButton = this.page.locator(productRemoveButton);
+
+    await expect(removeFromCartButton).toBeVisible();
+    await expect(removeFromCartButton).toContainText("Remove");
+    await removeFromCartButton.click();
+
+    await expect(this.cartButton).toBeVisible();
+    await expect(this.cartBadge).not.toBeVisible();
   }
 }
