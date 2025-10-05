@@ -59,7 +59,6 @@ export class LocatorsFactory {
     CART_DESC_TEXT: ".cart_desc_label",
     CART_PRODUCT_CARD: '.cart_item',
     CART_PRODUCT_QUANTITY: '.cart_quantity',
-
     CART_FOOTER: ".cart_footer",
     CONTINUE_SHOPPING_BUTTON: "#continue-shopping",
     CHECKOUT_BUTTON: "#checkout",
