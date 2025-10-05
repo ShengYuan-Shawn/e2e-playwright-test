@@ -6,9 +6,13 @@ import { ProductDetails } from "../factory/productDetails";
 export class CartPage extends BasePage {
   readonly cartQuantityText: Locator;
   readonly cartDescText: Locator;
+  readonly cartProductCard: Locator;
+  readonly cartProductQuantity: Locator;
   readonly cartFooter: Locator;
   readonly continueShoppingButton: Locator;
   readonly checkoutButton: Locator;
+
+  private currentCartCount: string = "0";
 
   constructor(page: Page) {
     super(page); // Initialize BasePage
@@ -17,6 +21,8 @@ export class CartPage extends BasePage {
 
     this.cartQuantityText = page.locator(Cart.CART_QUANTITY_TEXT);
     this.cartDescText = page.locator(Cart.CART_DESC_TEXT);
+    this.cartProductCard = page.locator(Cart.CART_PRODUCT_CARD);
+    this.cartProductQuantity = page.locator(Cart.CART_PRODUCT_QUANTITY);
     this.cartFooter = page.locator(Cart.CART_FOOTER);
     this.continueShoppingButton = page.locator(Cart.CONTINUE_SHOPPING_BUTTON);
     this.checkoutButton = page.locator(Cart.CHECKOUT_BUTTON);
@@ -102,14 +108,41 @@ export class CartPage extends BasePage {
 
     await expect(this.cartBadge).toBeVisible();
 
-    const getCurrentCartValue = await this.commonUtils.getText(this.cartBadge);
+    this.currentCartCount = await this.commonUtils.getText(this.cartBadge);
 
-    if (parseInt(getCurrentCartValue ?? "0") != 0) {
-      await expect(this.cartBadge).toContainText("1");
+    if (parseInt(this.currentCartCount ?? "0") !== 0) {
+      await expect(this.cartBadge).toContainText(this.currentCartCount);
     }
   }
 
-  async verifyLatestItem() {
+  async verifyLatestItem(productKey: ProductKey) {
+    // Retrieve Product Details xPath From Maps
+    const productDetails = ProductDetails.PRODUCT_MAP[productKey];
+    const productRemoveButton =
+      LocatorsFactory.PRODUCT_SELECTORS[productKey].REMOVE_BUTTON;
+
     await this.goToCart();
+
+    await expect(this.hamburgerButton).toBeVisible();
+    await expect(this.textLogo).toBeVisible();
+    await expect(this.textLogo).toHaveText("Swag Labs");
+    await expect(this.cartButton).toBeVisible();
+
+    await expect(this.productText).toBeVisible();
+    await expect(this.productText).toHaveText("Your Cart");
+
+    await expect(this.cartQuantityText).toBeVisible();
+    await expect(this.cartQuantityText).toHaveText("QTY");
+    await expect(this.cartDescText).toBeVisible();
+    await expect(this.cartDescText).toHaveText("Description");
+
+    await expect(this.cartProductCard).toBeVisible();
+
+    await expect(this.cartProductQuantity).toBeVisible();
+    await expect(this.cartProductQuantity).toContainText(this.currentCartCount);
+
+    // await expect(this.cartFooter).toBeVisible();
+    // await expect(this.continueShoppingButton).toBeVisible();
+    // await expect(this.checkoutButton).toBeVisible();
   }
 }

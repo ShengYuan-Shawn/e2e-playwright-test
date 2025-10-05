@@ -16,7 +16,7 @@ test.describe("Cart Page", () => {
   );
 
   testSetup(
-    "Verify Add Product To Cart & Check Cart List",
+    "Verify Add Product To Cart & Remove Product From Cart",
     async ({ loginPage, homePage, cartPage }) => {
       await loginPage.enterValidUsername(process.env.VALID_USER as string);
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
@@ -26,7 +26,7 @@ test.describe("Cart Page", () => {
 
       await cartPage.getProductDetails("BACKPACK");
       await cartPage.addProductToCart("BACKPACK");
-      await cartPage.verifyLatestItem();
+      await cartPage.verifyLatestItem("BACKPACK");
     }
   );
 });

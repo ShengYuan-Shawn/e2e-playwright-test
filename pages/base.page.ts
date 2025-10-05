@@ -34,6 +34,11 @@ export class BasePage {
     this.termsText = page.locator(Base.TERMS_TEXT);
   }
 
+  async getCartCount(): Promise<String> {
+    await expect(this.cartBadge).toBeVisible();
+    return await this.commonUtils.getText(this.cartBadge);
+  }
+
   async goToCart() {
     await expect(this.cartButton).toBeVisible();
     await this.cartButton.click();
