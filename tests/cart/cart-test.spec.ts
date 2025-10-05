@@ -24,9 +24,14 @@ test.describe("Cart Page", () => {
 
       await homePage.verifyHome();
 
-      await cartPage.getProductDetails("BACKPACK");
+      await cartPage.verifyProductDetails("BACKPACK");
       await cartPage.addProductToCart("BACKPACK");
       await cartPage.verifyLatestItem("BACKPACK");
+
+      await cartPage.goToHome();
+      await cartPage.goToCart();
+
+      await cartPage.removeItemFromCart();
     }
   );
 });

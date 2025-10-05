@@ -28,6 +28,12 @@ export class CartPage extends BasePage {
     this.checkoutButton = page.locator(Cart.CHECKOUT_BUTTON);
   }
 
+  // Navigation
+  async goToHome() {
+    await expect(this.continueShoppingButton).toBeVisible();
+    await this.continueShoppingButton.click();
+  }
+
   async verifyEmptyCart() {
     await this.goToCart();
 
@@ -49,13 +55,13 @@ export class CartPage extends BasePage {
     await expect(this.checkoutButton).toBeVisible();
   }
 
-  async getProductDetails(productKey: ProductKey) {
+  async verifyProductDetails(productKey: ProductKey) {
     // Retrieve Product Details xPath From Maps
     const productDetails = ProductDetails.PRODUCT_MAP[productKey];
     const productAddButton =
       LocatorsFactory.PRODUCT_SELECTORS[productKey].ADD_TO_CART_BUTTON;
 
-    // Frame Product Name, Desc, Price xPath
+    // Frame Product Image, Name, Desc, Price xPath
     const productImage = this.page.locator(
       productAddButton +
         "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_img']"
@@ -109,7 +115,6 @@ export class CartPage extends BasePage {
     await expect(this.cartBadge).toBeVisible();
 
     this.currentCartCount = await this.commonUtils.getText(this.cartBadge);
-
     if (parseInt(this.currentCartCount ?? "0") !== 0) {
       await expect(this.cartBadge).toContainText(this.currentCartCount);
     }
@@ -120,6 +125,22 @@ export class CartPage extends BasePage {
     const productDetails = ProductDetails.PRODUCT_MAP[productKey];
     const productRemoveButton =
       LocatorsFactory.PRODUCT_SELECTORS[productKey].REMOVE_BUTTON;
+
+    // Frame Product Name, Desc, Price xPath
+    const productName = this.page.locator(
+      productRemoveButton +
+        "/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_name']"
+    );
+    const productDesc = this.page.locator(
+      productRemoveButton +
+        "/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_desc']"
+    );
+    const productPrice = this.page.locator(
+      productRemoveButton +
+        "/preceding-sibling::div[@class='inventory_item_price']"
+    );
+
+    const removeFromCartButton = this.page.locator(productRemoveButton);
 
     await this.goToCart();
 
@@ -141,8 +162,32 @@ export class CartPage extends BasePage {
     await expect(this.cartProductQuantity).toBeVisible();
     await expect(this.cartProductQuantity).toContainText(this.currentCartCount);
 
-    // await expect(this.cartFooter).toBeVisible();
-    // await expect(this.continueShoppingButton).toBeVisible();
-    // await expect(this.checkoutButton).toBeVisible();
+    await expect(productName).toBeVisible();
+    await expect(productName).toContainText(productDetails.NAME);
+
+    await expect(productDesc).toBeVisible();
+    await expect(productDesc).toContainText(productDetails.DESC);
+
+    await expect(productPrice).toBeVisible();
+    await expect(productPrice).toContainText(productDetails.PRICE);
+
+    await expect(removeFromCartButton).toBeVisible();
+    await expect(removeFromCartButton).toContainText("Remove");
+
+    await expect(this.continueShoppingButton).toBeVisible();
+    await expect(this.continueShoppingButton).toContainText(
+      "Continue Shopping"
+    );
+
+    await expect(this.checkoutButton).toBeVisible();
+    await expect(this.checkoutButton).toContainText("Checkout");
+
+    await expect(this.cartFooter).toBeVisible();
+    await expect(this.continueShoppingButton).toBeVisible();
+    await expect(this.checkoutButton).toBeVisible();
+  }
+
+  async removeItemFromCart() {
+    
   }
 }
