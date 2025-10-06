@@ -26,14 +26,19 @@ test.describe("Cart Page", () => {
 
       await cartPage.verifyProductDetails("BACKPACK");
       await cartPage.addProductToCart("BACKPACK");
+      await cartPage.goToCart();
       await cartPage.verifyLatestItem("BACKPACK");
 
       await cartPage.goToHome();
       await cartPage.goToCart();
 
-      await cartPage.removeItemFromCart("BACKPACK");
+      await cartPage.removeProductToCart("BACKPACK");
       await cartPage.verifyEmptyCart();
-      await cartPage.goToHome();
     }
+  );
+
+  testSetup(
+    "Verify Add Product To Cart & Checkout",
+    async ({ loginPage, homePage, cartPage }) => {}
   );
 });
