@@ -3,12 +3,14 @@ import { CommonUtils } from "../utils/commonUtils";
 import { LoginPage } from "../pages/login.page";
 import { HomePage } from "../pages/home.page";
 import { CartPage } from "../pages/cart.page";
+import { CheckoutPage } from "../pages/checkout.page";
 
 export interface TestFixtures {
   commonUtils: CommonUtils;
   loginPage: LoginPage;
   homePage: HomePage;
   cartPage: CartPage;
+  checkoutPage: CheckoutPage;
 }
 
 export const baseURL = process.env.BASE_URL || "https://www.saucedemo.com";
@@ -34,6 +36,11 @@ export const testSetup = test.extend<TestFixtures>({
   cartPage: async ({ page, commonUtils }, use) => {
     const cartPage = new CartPage(page);
     await use(cartPage);
+  },
+
+  checkoutPage: async ({ page, commonUtils }, use) => {
+    const checkoutPage = new CheckoutPage(page);
+    await use(checkoutPage);
   },
 });
 

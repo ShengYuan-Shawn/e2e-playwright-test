@@ -29,19 +29,23 @@ export class LocatorsFactory {
 
   static readonly PRODUCT_SELECTORS = {
     BACKPACK: {
-      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-backpack']",
+      ADD_TO_CART_BUTTON:
+        "xpath=//button[@id='add-to-cart-sauce-labs-backpack']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-backpack']",
     },
     BIKE_LIGHT: {
-      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-bike-light']",
+      ADD_TO_CART_BUTTON:
+        "xpath=//button[@id='add-to-cart-sauce-labs-bike-light']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-bike-light']",
     },
     BOLT_SHIRT: {
-      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']",
+      ADD_TO_CART_BUTTON:
+        "xpath=//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-bolt-t-shirt']",
     },
     FLEECE_JACKET: {
-      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-fleece-jacket']",
+      ADD_TO_CART_BUTTON:
+        "xpath=//button[@id='add-to-cart-sauce-labs-fleece-jacket']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-fleece-jacket']",
     },
     ONESIE: {
@@ -49,19 +53,42 @@ export class LocatorsFactory {
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-onesie']",
     },
     RED_SHIRT: {
-      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']",
-      REMOVE_BUTTON: "xpath=//button[@id='remove-test.allthethings()-t-shirt-(red)']",
+      ADD_TO_CART_BUTTON:
+        "xpath=//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']",
+      REMOVE_BUTTON:
+        "xpath=//button[@id='remove-test.allthethings()-t-shirt-(red)']",
     },
   } as const;
 
   static readonly CART_PAGE = {
     CART_QUANTITY_TEXT: ".cart_quantity_label",
     CART_DESC_TEXT: ".cart_desc_label",
-    CART_PRODUCT_CARD: '.cart_item',
-    CART_FOOTER: ".cart_footer",
+    CART_PRODUCT_CARD: ".cart_item",
     CONTINUE_SHOPPING_BUTTON: "#continue-shopping",
     CHECKOUT_BUTTON: "#checkout",
   } as const;
+
+  static readonly CHECKOUT_PAGE = {
+    CHECKOUT_FORM: ".checkout_info",
+    FIRST_NAME_INPUT: "#first-name",
+    LAST_NAME_INPUT: "#last-name",
+    POSTAL_CODE_INPUT: "#postal-code",
+    ERROR_MESSAGE: ".error-message-container",
+    CANCEL_BUTTON: "#cancel",
+    CONTINUE_BUTTON: "#continue",
+  } as const;
+
+  static readonly SUMMARY_PAGE = {
+    PAYMENT_INFO: '[data-test="payment-info-label"]',
+    PAYMENT_VALUE: '[data-test="payment-info-value"]',
+    SHIPPING_INFO: '[data-test="shipping-info-label"]',
+    SHIPPING_VALUE: '[data-test="shipping-info-value"]',
+    PRICE_INFO: '[data-test="total-info-label"]',
+    PRICE_SUBTOTAL_VALUE: ".summary_subtotal_label",
+    PRICE_TAX_VALUE: ".summary_tax_label",
+    PRICE_TOTAL_VALUE: ".summary_total_label",
+    FINISH_BUTTON: "#finish",
+  };
 }
 
 export type BasePageKey = keyof typeof LocatorsFactory.BASE_PAGE;
@@ -69,3 +96,5 @@ export type LoginPageKey = keyof typeof LocatorsFactory.LOGIN_PAGE;
 export type HomePageKey = keyof typeof LocatorsFactory.HOME_PAGE;
 export type ProductKey = keyof typeof LocatorsFactory.PRODUCT_SELECTORS;
 export type CartPageKey = keyof typeof LocatorsFactory.CART_PAGE;
+export type CheckoutPageKey = keyof typeof LocatorsFactory.CHECKOUT_PAGE;
+export type SummaryPageKey = keyof typeof LocatorsFactory.SUMMARY_PAGE;

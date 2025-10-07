@@ -26,12 +26,8 @@ test.describe("Cart Page", () => {
 
       await cartPage.verifyProductDetails("BACKPACK");
       await cartPage.addProductToCart("BACKPACK");
-      await cartPage.goToCart();
+      await cartPage.navaigateToCart();
       await cartPage.verifyLatestItem("BACKPACK");
-
-      await cartPage.goToHome();
-      await cartPage.goToCart();
-
       await cartPage.removeProductToCart("BACKPACK");
       await cartPage.verifyEmptyCart();
     }
@@ -39,6 +35,23 @@ test.describe("Cart Page", () => {
 
   testSetup(
     "Verify Add Product To Cart & Checkout",
-    async ({ loginPage, homePage, cartPage }) => {}
+    async ({ loginPage, homePage, cartPage, checkoutPage }) => {
+      await loginPage.enterValidUsername(process.env.VALID_USER as string);
+      await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
+      await loginPage.clickLoginButton();
+
+      await homePage.verifyHome();
+
+      await cartPage.verifyProductDetails("BACKPACK");
+      await cartPage.addProductToCart("BACKPACK");
+      await cartPage.navaigateToCart();
+      await cartPage.verifyLatestItem("BACKPACK");
+
+      await checkoutPage.navigateToCheckout();
+      await checkoutPage.verifyCheckoutForm();
+      await checkoutPage.checkoutFormValidation();
+      await checkoutPage.inputPersonalDetails();
+      await checkoutPage.submitCheckoutForm();
+    }
   );
 });
