@@ -29,23 +29,19 @@ export class LocatorsFactory {
 
   static readonly PRODUCT_SELECTORS = {
     BACKPACK: {
-      ADD_TO_CART_BUTTON:
-        "xpath=//button[@id='add-to-cart-sauce-labs-backpack']",
+      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-backpack']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-backpack']",
     },
     BIKE_LIGHT: {
-      ADD_TO_CART_BUTTON:
-        "xpath=//button[@id='add-to-cart-sauce-labs-bike-light']",
+      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-bike-light']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-bike-light']",
     },
     BOLT_SHIRT: {
-      ADD_TO_CART_BUTTON:
-        "xpath=//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']",
+      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-bolt-t-shirt']",
     },
     FLEECE_JACKET: {
-      ADD_TO_CART_BUTTON:
-        "xpath=//button[@id='add-to-cart-sauce-labs-fleece-jacket']",
+      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-sauce-labs-fleece-jacket']",
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-fleece-jacket']",
     },
     ONESIE: {
@@ -53,10 +49,8 @@ export class LocatorsFactory {
       REMOVE_BUTTON: "xpath=//button[@id='remove-sauce-labs-onesie']",
     },
     RED_SHIRT: {
-      ADD_TO_CART_BUTTON:
-        "xpath=//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']",
-      REMOVE_BUTTON:
-        "xpath=//button[@id='remove-test.allthethings()-t-shirt-(red)']",
+      ADD_TO_CART_BUTTON: "xpath=//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']",
+      REMOVE_BUTTON: "xpath=//button[@id='remove-test.allthethings()-t-shirt-(red)']",
     },
   } as const;
 
