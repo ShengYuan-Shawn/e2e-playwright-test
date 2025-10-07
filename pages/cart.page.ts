@@ -7,7 +7,6 @@ export class CartPage extends BasePage {
   readonly cartQuantityText: Locator;
   readonly cartDescText: Locator;
   readonly cartProductCard: Locator;
-  readonly cartFooter: Locator;
   readonly continueShoppingButton: Locator;
   readonly checkoutButton: Locator;
 
@@ -29,18 +28,17 @@ export class CartPage extends BasePage {
     this.cartQuantityText = page.locator(Cart.CART_QUANTITY_TEXT);
     this.cartDescText = page.locator(Cart.CART_DESC_TEXT);
     this.cartProductCard = page.locator(Cart.CART_PRODUCT_CARD);
-    this.cartFooter = page.locator(Cart.CART_FOOTER);
     this.continueShoppingButton = page.locator(Cart.CONTINUE_SHOPPING_BUTTON);
     this.checkoutButton = page.locator(Cart.CHECKOUT_BUTTON);
   }
 
-  async goToHome() {
+  async navigateToHome() {
     await expect(this.continueShoppingButton).toBeVisible();
     await this.continueShoppingButton.click();
   }
 
   async verifyEmptyCart() {
-    await this.goToCart();
+    await this.navaigateToCart();
 
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
@@ -48,8 +46,8 @@ export class CartPage extends BasePage {
     await expect(this.cartButton).toBeVisible();
     await expect(this.cartBadge).not.toBeVisible();
 
-    await expect(this.productText).toBeVisible();
-    await expect(this.productText).toHaveText("Your Cart");
+    await expect(this.titleText).toBeVisible();
+    await expect(this.titleText).toHaveText("Your Cart");
 
     await expect(this.cartQuantityText).toBeVisible();
     await expect(this.cartQuantityText).toHaveText("QTY");
@@ -57,9 +55,13 @@ export class CartPage extends BasePage {
     await expect(this.cartDescText).toHaveText("Description");
     await expect(this.cartProductCard).not.toBeVisible();
 
-    await expect(this.cartFooter).toBeVisible();
     await expect(this.continueShoppingButton).toBeVisible();
+    await expect(this.continueShoppingButton).toContainText(
+      "Continue Shopping"
+    );
+
     await expect(this.checkoutButton).toBeVisible();
+    await expect(this.checkoutButton).toContainText("Checkout");
   }
 
   async verifyProductDetails(productKey: ProductKey) {
@@ -183,8 +185,8 @@ export class CartPage extends BasePage {
     await expect(this.textLogo).toHaveText("Swag Labs");
     await expect(this.cartButton).toBeVisible();
 
-    await expect(this.productText).toBeVisible();
-    await expect(this.productText).toHaveText("Your Cart");
+    await expect(this.titleText).toBeVisible();
+    await expect(this.titleText).toHaveText("Your Cart");
 
     await expect(this.cartQuantityText).toBeVisible();
     await expect(this.cartQuantityText).toHaveText("QTY");

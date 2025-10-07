@@ -47,8 +47,8 @@ export class HomePage extends BasePage {
     await expect(this.textLogo).toHaveText("Swag Labs");
     await expect(this.cartButton).toBeVisible();
 
-    await expect(this.productText).toBeVisible();
-    await expect(this.productText).toHaveText("Products");
+    await expect(this.titleText).toBeVisible();
+    await expect(this.titleText).toHaveText("Products");
     await expect(this.productFilterButton).toBeVisible();
   }
 
