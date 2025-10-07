@@ -37,7 +37,8 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: npx playwright test
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - name: 📤 Upload Test Report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
