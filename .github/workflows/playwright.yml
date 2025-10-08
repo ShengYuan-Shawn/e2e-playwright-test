@@ -34,7 +34,7 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           VALID_USER: ${{ secrets.VALID_USER }}
           LOCKED_USER: ${{ secrets.LOCKED_USER }}
-          VALID_PASSWORD: ${{ secrets.PASSWORD }}
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
         run: npx playwright test tests
 
       - name: 📤 Upload Test Report
