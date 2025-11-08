@@ -79,7 +79,7 @@ export class LocatorsFactory {
     PRICE_TAX_VALUE: ".summary_tax_label",
     PRICE_TOTAL_VALUE: ".summary_total_label",
     FINISH_BUTTON: "#finish",
-    GREEN_CHECK_IMAGE: ".pong-express",
+    GREEN_CHECK_IMAGE: ".pony_express",
     THANK_YOU_TITLE: ".complete-header",
     ORDER_DISPATCHED_TEXT: ".complete-text",
     BACK_HOME_BUTTON: "#back-to-products"
