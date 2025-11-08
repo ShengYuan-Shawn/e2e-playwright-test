@@ -70,9 +70,6 @@ export class LocatorsFactory {
     ERROR_MESSAGE: ".error-message-container",
     CANCEL_BUTTON: "#cancel",
     CONTINUE_BUTTON: "#continue",
-  } as const;
-
-  static readonly SUMMARY_PAGE = {
     PAYMENT_INFO: '[data-test="payment-info-label"]',
     PAYMENT_VALUE: '[data-test="payment-info-value"]',
     SHIPPING_INFO: '[data-test="shipping-info-label"]',
@@ -82,7 +79,12 @@ export class LocatorsFactory {
     PRICE_TAX_VALUE: ".summary_tax_label",
     PRICE_TOTAL_VALUE: ".summary_total_label",
     FINISH_BUTTON: "#finish",
-  };
+    GREEN_CHECK_IMAGE: ".pong-express",
+    THANK_YOU_TITLE: ".complete-header",
+    ORDER_DISPATCHED_TEXT: ".complete-text",
+    BACK_HOME_BUTTON: "#back-to-products"
+  } as const;
+
 }
 
 export type BasePageKey = keyof typeof LocatorsFactory.BASE_PAGE;
@@ -91,4 +93,3 @@ export type HomePageKey = keyof typeof LocatorsFactory.HOME_PAGE;
 export type ProductKey = keyof typeof LocatorsFactory.PRODUCT_SELECTORS;
 export type CartPageKey = keyof typeof LocatorsFactory.CART_PAGE;
 export type CheckoutPageKey = keyof typeof LocatorsFactory.CHECKOUT_PAGE;
-export type SummaryPageKey = keyof typeof LocatorsFactory.SUMMARY_PAGE;
