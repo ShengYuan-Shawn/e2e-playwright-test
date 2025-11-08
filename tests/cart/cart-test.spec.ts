@@ -52,6 +52,9 @@ test.describe("Cart Page", () => {
       await checkoutPage.checkoutFormValidation();
       await checkoutPage.inputPersonalDetails();
       await checkoutPage.submitCheckoutForm();
+      await checkoutPage.verifyCheckoutOverview("BACKPACK");
+      await checkoutPage.clickFinish();
+      await checkoutPage.verifyCheckoutComplete();
     }
   );
 });
