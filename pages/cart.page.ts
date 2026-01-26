@@ -1,7 +1,10 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
-import { LocatorsFactory, ProductKey } from "../factory/locatorsFactory";
-import { ProductDetails } from "../factory/productDetails";
+import {
+  CART_SELECTORS,
+  ProductSelectors,
+} from "../selectors/index";
+import { PRODUCTS, ProductKey } from "../test-data/index";
 
 export class CartPage extends BasePage {
   readonly cartQuantityText: Locator;
@@ -23,11 +26,11 @@ export class CartPage extends BasePage {
   constructor(page: Page) {
     super(page);
 
-    const Cart = LocatorsFactory.CART_PAGE;
+    const Cart = CART_SELECTORS;
 
-    this.cartQuantityText = page.locator(Cart.CART_QUANTITY_TEXT);
-    this.cartDescText = page.locator(Cart.CART_DESC_TEXT);
-    this.cartProductCard = page.locator(Cart.CART_PRODUCT_CARD);
+    this.cartQuantityText = page.locator(Cart.QUANTITY_TEXT);
+    this.cartDescText = page.locator(Cart.DESC_TEXT);
+    this.cartProductCard = page.locator(Cart.PRODUCT_CARD);
     this.continueShoppingButton = page.locator(Cart.CONTINUE_SHOPPING_BUTTON);
     this.checkoutButton = page.locator(Cart.CHECKOUT_BUTTON);
   }
@@ -38,7 +41,7 @@ export class CartPage extends BasePage {
   }
 
   async verifyEmptyCart() {
-    await this.navaigateToCart();
+    await this.navigateToCart();
 
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
@@ -57,7 +60,7 @@ export class CartPage extends BasePage {
 
     await expect(this.continueShoppingButton).toBeVisible();
     await expect(this.continueShoppingButton).toContainText(
-      "Continue Shopping"
+      "Continue Shopping",
     );
 
     await expect(this.checkoutButton).toBeVisible();
@@ -66,26 +69,25 @@ export class CartPage extends BasePage {
 
   async verifyProductDetails(productKey: ProductKey) {
     // Retrieve Product Details xPath From Maps
-    const productDetails = ProductDetails.PRODUCT_MAP[productKey];
-    const productAddButton =
-      LocatorsFactory.PRODUCT_SELECTORS[productKey].ADD_TO_CART_BUTTON;
+    const productDetails = PRODUCTS[productKey];
+    const productAddButton = ProductSelectors.addToCart(productKey);
 
     // Frame Product Image, Name, Desc, Price xPath
     const productImage = this.page.locator(
       productAddButton +
-        "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_img']"
+        "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_img']",
     );
     const productName = this.page.locator(
       productAddButton +
-        "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_name ']"
+        "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_name ']",
     );
     const productDesc = this.page.locator(
       productAddButton +
-        "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_desc']"
+        "/ancestor::div[@class='inventory_item']//div[@class='inventory_item_desc']",
     );
     const productPrice = this.page.locator(
       productAddButton +
-        "/preceding-sibling::div[@class='inventory_item_price']"
+        "/preceding-sibling::div[@class='inventory_item_price']",
     );
 
     const addToCartButton = this.page.locator(productAddButton);
@@ -107,10 +109,8 @@ export class CartPage extends BasePage {
   }
 
   async addProductToCart(productKey: ProductKey) {
-    const productAddButton =
-      LocatorsFactory.PRODUCT_SELECTORS[productKey].ADD_TO_CART_BUTTON;
-    const productRemoveButton =
-      LocatorsFactory.PRODUCT_SELECTORS[productKey].REMOVE_BUTTON;
+    const productAddButton = ProductSelectors.addToCart(productKey);
+    const productRemoveButton = ProductSelectors.remove(productKey);
 
     const addToCartButton = this.page.locator(productAddButton);
     const removeFromCartButton = this.page.locator(productRemoveButton);
@@ -133,8 +133,7 @@ export class CartPage extends BasePage {
   }
 
   async removeProductToCart(productKey: ProductKey) {
-    const productRemoveButton =
-      LocatorsFactory.PRODUCT_SELECTORS[productKey].REMOVE_BUTTON;
+    const productRemoveButton = ProductSelectors.remove(productKey);
 
     const removeFromCartButton = this.page.locator(productRemoveButton);
 
@@ -153,29 +152,28 @@ export class CartPage extends BasePage {
 
   async verifyLatestItem(productKey: ProductKey) {
     // Retrieve Product Details xPath From Maps
-    const productDetails = ProductDetails.PRODUCT_MAP[productKey];
-    const productRemoveButton =
-      LocatorsFactory.PRODUCT_SELECTORS[productKey].REMOVE_BUTTON;
+    const productDetails = PRODUCTS[productKey];
+    const productRemoveButton = ProductSelectors.remove(productKey);
 
     // Frame Product Product Card, Name, Desc, Price xPath
     const productCard = this.page.locator(
-      productRemoveButton + "/ancestor::div[@class='cart_item']"
+      productRemoveButton + "/ancestor::div[@class='cart_item']",
     );
     const productQuantity = this.page.locator(
       productRemoveButton +
-        "/ancestor::div[@class='cart_item']//div[@class='cart_quantity']"
+        "/ancestor::div[@class='cart_item']//div[@class='cart_quantity']",
     );
     const productName = this.page.locator(
       productRemoveButton +
-        "/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_name']"
+        "/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_name']",
     );
     const productDesc = this.page.locator(
       productRemoveButton +
-        "/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_desc']"
+        "/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_desc']",
     );
     const productPrice = this.page.locator(
       productRemoveButton +
-        "/preceding-sibling::div[@class='inventory_item_price']"
+        "/preceding-sibling::div[@class='inventory_item_price']",
     );
 
     const removeFromCartButton = this.page.locator(productRemoveButton);

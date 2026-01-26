@@ -10,5 +10,9 @@ node_modules/
 # Env
 .env
 
-#Screenshots
+# Screenshots
 screenshots/
+
+# Logs
+*.log
+npm-debug.log*

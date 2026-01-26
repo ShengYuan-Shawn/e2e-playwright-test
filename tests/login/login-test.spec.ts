@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import { testSetup } from "../../fixtures/testSetup";
 
-test.describe("Login Page", () => {
+test.describe.serial("Login Page", () => {
   testSetup("Verify Login Page UI", async ({ loginPage }) => {
     await loginPage.verifyLoginPage();
   });
@@ -30,7 +30,7 @@ test.describe("Login Page", () => {
       await loginPage.enterRandomPassword();
       await loginPage.clickLoginButton();
       await loginPage.verifyErrorMessage("INVALID_CREDENTIALS");
-    }
+    },
   );
 
   testSetup(
@@ -40,8 +40,8 @@ test.describe("Login Page", () => {
       await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);
       await loginPage.clickLoginButton();
 
-      await loginPage.verifyErrorMessage("USER_LOCKED");
-    }
+      await loginPage.verifyErrorMessage("LOCKED_USER");
+    },
   );
 
   testSetup(
@@ -52,6 +52,6 @@ test.describe("Login Page", () => {
       await loginPage.clickLoginButton();
 
       await homePage.verifyHome();
-    }
+    },
   );
 });

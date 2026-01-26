@@ -1,7 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { HOME_SELECTORS } from "../selectors/index";
 import { BasePage } from "./base.page";
-import { CommonUtils } from "../utils/commonUtils";
-import { LocatorsFactory } from "../factory/locatorsFactory";
 
 export class HomePage extends BasePage {
   readonly productFilterButton: Locator;
@@ -17,12 +16,12 @@ export class HomePage extends BasePage {
   private static readonly SOCIAL_ITEMS = ["twitter", "facebook", "linkedin"];
 
   private static readonly COPYRIGHT_TEXT =
-    "© 2025 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy";
+    "© 2026 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy";
 
   constructor(page: Page) {
     super(page); // Initialize BasePage
 
-    const Home = LocatorsFactory.HOME_PAGE;
+    const Home = HOME_SELECTORS;
 
     this.productFilterButton = page.locator(Home.PRODUCT_FILTER_BUTTON);
     this.productPrice = page.locator(Home.PRODUCT_PRICE);

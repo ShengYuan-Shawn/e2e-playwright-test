@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import { testSetup } from "../../fixtures/testSetup";
 
-test.describe("Cart Page", () => {
+test.describe.serial("Cart Page", () => {
   testSetup(
     "Verify Cart Page UI",
     async ({ loginPage, homePage, cartPage }) => {
@@ -26,7 +26,7 @@ test.describe("Cart Page", () => {
 
       await cartPage.verifyProductDetails("BACKPACK");
       await cartPage.addProductToCart("BACKPACK");
-      await cartPage.navaigateToCart();
+      await cartPage.navigateToCart();
       await cartPage.verifyLatestItem("BACKPACK");
       await cartPage.removeProductToCart("BACKPACK");
       await cartPage.verifyEmptyCart();
@@ -44,7 +44,7 @@ test.describe("Cart Page", () => {
 
       await cartPage.verifyProductDetails("BACKPACK");
       await cartPage.addProductToCart("BACKPACK");
-      await cartPage.navaigateToCart();
+      await cartPage.navigateToCart();
       await cartPage.verifyLatestItem("BACKPACK");
 
       await checkoutPage.navigateToCheckout();

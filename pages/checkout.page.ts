@@ -1,8 +1,9 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
+import { CHECKOUT_SELECTORS } from "../selectors/index";
+import { PRODUCTS, ProductKey } from "../test-data/index";
+import { ERROR_MESSAGES } from "../test-data/index";
 import { BasePage } from "./base.page";
-import { LocatorsFactory, ProductKey } from "../factory/locatorsFactory";
-import { ProductDetails } from "../factory/productDetails";
 import { CartPage } from "./cart.page";
 
 export class CheckoutPage extends BasePage {
@@ -29,19 +30,13 @@ export class CheckoutPage extends BasePage {
   readonly orderDispatchedText: Locator;
   readonly backHomeButton: Locator;
 
-  private readonly ERROR_MESSAGES = {
-    FIRST_NAME_REQUIRED: "Error: First Name is required",
-    LAST_NAME_REQUIRED: "Error: Last Name is required",
-    POSTAL_CODE_REQUIRED: "Error: Postal Code is required",
-  } as const;
-
   constructor(page: Page) {
     super(page);
     this.cartPage = new CartPage(page);
 
-    const Checkout = LocatorsFactory.CHECKOUT_PAGE;
+    const Checkout = CHECKOUT_SELECTORS;
 
-    this.checkoutForm = page.locator(Checkout.CHECKOUT_FORM);
+    this.checkoutForm = page.locator(Checkout.FORM);
     this.firstNameInput = page.locator(Checkout.FIRST_NAME_INPUT);
     this.lastNameInput = page.locator(Checkout.LAST_NAME_INPUT);
     this.postalCodeInput = page.locator(Checkout.POSTAL_CODE_INPUT);
@@ -53,13 +48,13 @@ export class CheckoutPage extends BasePage {
     this.shippingInfoTitle = page.locator(Checkout.SHIPPING_INFO);
     this.shippingValueText = page.locator(Checkout.SHIPPING_VALUE);
     this.priceInfoTitle = page.locator(Checkout.PRICE_INFO);
-    this.priceSubtotalText = page.locator(Checkout.PRICE_SUBTOTAL_VALUE);
-    this.priceTaxText = page.locator(Checkout.PRICE_TAX_VALUE);
-    this.priceTotalText = page.locator(Checkout.PRICE_TOTAL_VALUE);
+    this.priceSubtotalText = page.locator(Checkout.PRICE_SUBTOTAL);
+    this.priceTaxText = page.locator(Checkout.PRICE_TAX);
+    this.priceTotalText = page.locator(Checkout.PRICE_TOTAL);
     this.finishButton = page.locator(Checkout.FINISH_BUTTON);
-    this.greenCheckImage = page.locator(Checkout.GREEN_CHECK_IMAGE);
-    this.thankYouTitle = page.locator(Checkout.THANK_YOU_TITLE);
-    this.orderDispatchedText = page.locator(Checkout.ORDER_DISPATCHED_TEXT);
+    this.greenCheckImage = page.locator(Checkout.SUCCESS_IMAGE);
+    this.thankYouTitle = page.locator(Checkout.SUCCESS_TITLE);
+    this.orderDispatchedText = page.locator(Checkout.SUCCESS_MESSAGE);
     this.backHomeButton = page.locator(Checkout.BACK_HOME_BUTTON);
   }
 
@@ -86,12 +81,16 @@ export class CheckoutPage extends BasePage {
 
   async checkoutFormValidation() {
     // Submit Form With Empty Details
-    await this.verifyCheckoutFormError(this.ERROR_MESSAGES.FIRST_NAME_REQUIRED);
+    await this.verifyCheckoutFormError(
+      ERROR_MESSAGES.CHECKOUT.FIRSTNAME_REQUIRED,
+    );
 
     // Submit Form With Missing First Name
     await this.inputLastName();
     await this.inputPostalCode();
-    await this.verifyCheckoutFormError(this.ERROR_MESSAGES.FIRST_NAME_REQUIRED);
+    await this.verifyCheckoutFormError(
+      ERROR_MESSAGES.CHECKOUT.FIRSTNAME_REQUIRED,
+    );
 
     await this.lastNameInput.clear();
     await this.postalCodeInput.clear();
@@ -99,7 +98,9 @@ export class CheckoutPage extends BasePage {
     // Submit Form With Missing Last Name
     await this.inputFirstName();
     await this.inputPostalCode();
-    await this.verifyCheckoutFormError(this.ERROR_MESSAGES.LAST_NAME_REQUIRED);
+    await this.verifyCheckoutFormError(
+      ERROR_MESSAGES.CHECKOUT.LASTNAME_REQUIRED,
+    );
 
     await this.firstNameInput.clear();
     await this.postalCodeInput.clear();
@@ -108,7 +109,7 @@ export class CheckoutPage extends BasePage {
     await this.inputFirstName();
     await this.inputLastName();
     await this.verifyCheckoutFormError(
-      this.ERROR_MESSAGES.POSTAL_CODE_REQUIRED
+      ERROR_MESSAGES.CHECKOUT.LASTNAME_REQUIRED,
     );
 
     await this.firstNameInput.clear();
@@ -122,7 +123,7 @@ export class CheckoutPage extends BasePage {
   }
 
   async verifyCheckoutOverview(productKey: ProductKey) {
-    const productDetails = ProductDetails.PRODUCT_MAP[productKey];
+    const productDetails = PRODUCTS[productKey];
 
     const cartQuantityText = this.cartPage.cartQuantityText;
     const cartDescText = this.cartPage.cartDescText;
@@ -130,16 +131,16 @@ export class CheckoutPage extends BasePage {
     // Frame Product Product Card, Name, Desc, Price xPath
     const overviewProductCard = this.page.locator("//div[@class='cart_item']");
     const overviewProductQuantity = this.page.locator(
-      "//div[@class='cart_item']/div[@class='cart_quantity']"
+      "//div[@class='cart_item']/div[@class='cart_quantity']",
     );
     const overviewProductName = this.page.locator(
-      "//div[@class='cart_item_label']//div[@class='inventory_item_name']"
+      "//div[@class='cart_item_label']//div[@class='inventory_item_name']",
     );
     const overviewProductDesc = this.page.locator(
-      "//div[@class='cart_item_label']/div[@class='inventory_item_desc']"
+      "//div[@class='cart_item_label']/div[@class='inventory_item_desc']",
     );
     const overviewProductPrice = this.page.locator(
-      "//div[@class='cart_item_label']/div[@class='item_pricebar']"
+      "//div[@class='cart_item_label']/div[@class='item_pricebar']",
     );
 
     await expect(this.titleText).toBeVisible();
@@ -177,7 +178,7 @@ export class CheckoutPage extends BasePage {
     await expect(this.shippingInfoTitle).toContainText("Shipping Information");
     await expect(this.shippingValueText).toBeVisible();
     await expect(this.shippingValueText).toContainText(
-      "Free Pony Express Delivery!"
+      "Free Pony Express Delivery!",
     );
 
     // Verify Price Total Information
@@ -194,14 +195,14 @@ export class CheckoutPage extends BasePage {
     const productSubtotal = parseFloat(
       (await this.commonUtils.getText(this.priceSubtotalText)).replace(
         /[^0-9.]/g,
-        ""
-      )
+        "",
+      ),
     );
     const productTax = parseFloat(
       (await this.commonUtils.getText(this.priceTaxText)).replace(
         /[^0-9.]/g,
-        ""
-      )
+        "",
+      ),
     );
     const productTotal = (productSubtotal + productTax).toFixed(2);
 
@@ -217,7 +218,7 @@ export class CheckoutPage extends BasePage {
 
     await expect(this.orderDispatchedText).toBeVisible();
     await expect(this.orderDispatchedText).toContainText(
-      "Your order has been dispatched, and will arrive just as fast as the pony can get there!"
+      "Your order has been dispatched, and will arrive just as fast as the pony can get there!",
     );
 
     await expect(this.backHomeButton).toBeVisible();
