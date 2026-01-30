@@ -7,6 +7,9 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
+# Package
+package-lock.json
+
 # Env
 .env
 
@@ -16,3 +19,8 @@ screenshots/
 # Logs
 *.log
 npm-debug.log*
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/

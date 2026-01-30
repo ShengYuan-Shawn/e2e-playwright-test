@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { CommonUtils } from "../utils/commonUtils";
-import { BASE_SELECTORS } from "../selectors/index";
+import { BASE_SELECTORS } from "../selectors";
 
 export class BasePage {
   readonly page: Page;

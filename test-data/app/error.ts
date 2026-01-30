@@ -1,4 +1,3 @@
-// test-data/errors.data.ts
 export const ERROR_MESSAGES = {
   LOGIN: {
     USERNAME_REQUIRED: "Epic sadface: Username is required",
@@ -14,4 +13,5 @@ export const ERROR_MESSAGES = {
   },
 } as const;
 
-export type ErrorMessageKey = keyof typeof ERROR_MESSAGES;
+export type LoginErrorKey = keyof typeof ERROR_MESSAGES.LOGIN;
+export type CheckoutErrorKey = keyof typeof ERROR_MESSAGES.CHECKOUT;

@@ -1,7 +1,7 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { faker } from "@faker-js/faker";
 import { LOGIN_SELECTORS } from "../selectors/index";
-import { ERROR_MESSAGES } from "../test-data/index";
+import { ERROR_MESSAGES, LoginErrorKey } from "../test-data/app";
+import { faker } from "@faker-js/faker";
 
 export class LoginPage {
   readonly page: Page;
@@ -71,7 +71,7 @@ export class LoginPage {
     await this.loginButton.click();
   }
 
-  async verifyErrorMessage(errorType: keyof typeof ERROR_MESSAGES.LOGIN) {
+  async verifyErrorMessage(errorType: LoginErrorKey) {
     await expect(this.loginErrorMessage).toBeVisible();
     await expect(this.loginErrorMessage).toContainText(
       ERROR_MESSAGES.LOGIN[errorType],

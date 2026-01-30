@@ -8,11 +8,17 @@ export const PRODUCT_IDS = {
 } as const;
 
 export class ProductSelectors {
-  static addToCart(productId: string): string {
-    return `#add-to-cart-${productId}`;
-  }
+  static getSelectors(productId: keyof typeof PRODUCT_IDS) {
+    const product = PRODUCT_IDS[productId];
+    const container = `xpath=//button[@id='add-to-cart-${product}']/ancestor::div[@class='inventory_item']`;
 
-  static remove(productId: string): string {
-    return `#remove-${productId}`;
+    return {
+      image: `[data-test="inventory-item-${product}-img"]`,
+      name: `${container}//div[@data-test='inventory-item-name']`,
+      description: `${container}//div[@data-test='inventory-item-desc']`,
+      price: `${container}//div[@data-test='inventory-item-price']`,
+      addToCartButton: `xpath=//button[@id="add-to-cart-${product}"]`,
+      removeButton: `xpath=//button[@id="remove-${product}"]`,
+    };
   }
 }

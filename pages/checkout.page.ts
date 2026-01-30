@@ -1,10 +1,11 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { faker } from "@faker-js/faker";
-import { CHECKOUT_SELECTORS } from "../selectors/index";
-import { PRODUCTS, ProductKey } from "../test-data/index";
-import { ERROR_MESSAGES } from "../test-data/index";
 import { BasePage } from "./base.page";
-import { CartPage } from "./cart.page";
+import { CartPage } from "./products.page";
+import { CHECKOUT_SELECTORS } from "../selectors";
+import { ERROR_MESSAGES } from "../test-data/app";
+// import { PRODUCTS, ProductKey } from "../test-data/index";
+// import { ERROR_MESSAGES } from "../test-data/index";
+import { faker } from "@faker-js/faker";
 
 export class CheckoutPage extends BasePage {
   private cartPage: CartPage;
@@ -82,7 +83,7 @@ export class CheckoutPage extends BasePage {
   async checkoutFormValidation() {
     // Submit Form With Empty Details
     await this.verifyCheckoutFormError(
-      ERROR_MESSAGES.CHECKOUT.FIRSTNAME_REQUIRED,
+      ERROR_MESSAGES.CHECKOUT.FIRSTNAME_REQUIRED
     );
 
     // Submit Form With Missing First Name
