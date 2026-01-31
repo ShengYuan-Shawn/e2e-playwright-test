@@ -1,6 +1,11 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
-import { CART_SELECTORS, PRODUCT_IDS, ProductSelectors } from "../selectors";
+import {
+  CART_SELECTORS,
+  CartSelectors,
+  PRODUCT_IDS,
+  ProductSelectors,
+} from "../selectors";
 import { PRODUCTS } from "../test-data/domain/products";
 
 export class CartPage extends BasePage {
@@ -10,7 +15,7 @@ export class CartPage extends BasePage {
   readonly continueShoppingButton: Locator;
   readonly checkoutButton: Locator;
 
-  private _cartCount: number = 0;
+  _cartCount: number = 0;
 
   get cartCount(): number {
     return this._cartCount;
@@ -40,6 +45,8 @@ export class CartPage extends BasePage {
   async verifyEmptyCart() {
     await this.navigateToCart();
 
+    await expect(this.cartBadge).not.toBeVisible();
+
     await expect(this.hamburgerButton).toBeVisible();
     await expect(this.textLogo).toBeVisible();
     await expect(this.textLogo).toHaveText("Swag Labs");
@@ -64,120 +71,149 @@ export class CartPage extends BasePage {
     await expect(this.checkoutButton).toContainText("Checkout");
   }
 
-  async verifyProductDetails(productKey: keyof typeof PRODUCT_IDS) {
-    const productImage = this.page.locator(
-      ProductSelectors.getSelectors(productKey).image,
-    );
-    const productName = this.page.locator(
-      ProductSelectors.getSelectors(productKey).name,
-    );
-    const productDesc = this.page.locator(
-      ProductSelectors.getSelectors(productKey).description,
-    );
-    const productPrice = this.page.locator(
-      ProductSelectors.getSelectors(productKey).price,
-    );
-    const productAddToCart = this.page.locator(
-      ProductSelectors.getSelectors(productKey).addToCartButton,
-    );
-    const productRemoveButton = this.page.locator(
-      ProductSelectors.getSelectors(productKey).removeButton,
-    );
+  async verifyProductDetails(productKeys: (keyof typeof PRODUCT_IDS)[]) {
+    for (const productKey of productKeys) {
+      const product = await this.productSelector(productKey);
+      const productData = PRODUCTS[productKey];
 
-    await expect(productImage).toBeVisible();
+      await expect(product.productName).toBeVisible();
+      await expect(product.productName).toContainText(productData.name);
 
-    await expect(productName).toBeVisible();
-    await expect(productName).toContainText(PRODUCTS[productKey].name);
+      await expect(product.productDesc).toBeVisible();
+      await expect(product.productDesc).toContainText(productData.description);
 
-    await expect(productDesc).toBeVisible();
-    await expect(productDesc).toContainText(PRODUCTS[productKey].description);
+      await expect(product.productPrice).toBeVisible();
+      await expect(product.productPrice).toContainText(`$` + productData.price);
 
-    await expect(productPrice).toBeVisible();
-    await expect(productPrice).toContainText(`$` + PRODUCTS[productKey].price);
-
-    await expect(productAddToCart).toBeVisible();
-    await expect(productAddToCart).toHaveText("Add to cart");
-    await expect(productRemoveButton).not.toBeVisible();
-  }
-
-  async addProductToCart(productKey: keyof typeof PRODUCT_IDS) {
-    const productAddToCart = this.page.locator(
-      ProductSelectors.getSelectors(productKey).addToCartButton,
-    );
-    const productRemoveButton = this.page.locator(
-      ProductSelectors.getSelectors(productKey).removeButton,
-    );
-
-    await expect(productAddToCart).toBeVisible();
-    await productAddToCart.click();
-    await expect(productAddToCart).not.toBeVisible();
-
-    await expect(productRemoveButton).toBeVisible();
-    await expect(productRemoveButton).toContainText("Remove");
-
-    await expect(this.cartBadge).toBeVisible();
-
-    const currentCartItemCount = await this.commonUtils.getText(this.cartBadge);
-    if (parseInt(currentCartItemCount ?? "0") !== 0) {
-      await expect(this.cartBadge).toContainText(currentCartItemCount);
+      await expect(product.productAddToCart).toBeVisible();
+      await expect(product.productAddToCart).toHaveText("Add to cart");
+      await expect(product.productRemoveButton).not.toBeVisible();
     }
-
-    this._cartCount = parseInt(currentCartItemCount);
   }
 
-  async removeProductToCart(productKey: keyof typeof PRODUCT_IDS) {
-    const productRemoveButton = this.page.locator(
-      ProductSelectors.getSelectors(productKey).removeButton,
-    );
+  async addProduct(productKeys: (keyof typeof PRODUCT_IDS)[]) {
+    for (const productKey of productKeys) {
+      const product = await this.productSelector(productKey);
 
-    await expect(productRemoveButton).toBeVisible();
-    await expect(productRemoveButton).toContainText("Remove");
-    await productRemoveButton.click();
+      await expect(product.productAddToCart).toBeVisible();
+      await product.productAddToCart.click();
+      await expect(product.productAddToCart).not.toBeVisible();
 
-    if (this._cartCount > 1) {
-      this._cartCount -= 1;
+      await expect(product.productRemoveButton).toBeVisible();
+      await expect(product.productRemoveButton).toContainText("Remove");
+
       await expect(this.cartBadge).toBeVisible();
-      await expect(this.cartBadge).toContainText(this._cartCount.toString());
-    } else {
-      await expect(this.cartBadge).not.toBeVisible();
+
+      const currentCartItemCount = await this.commonUtils.getText(
+        this.cartBadge,
+      );
+      if (parseInt(currentCartItemCount ?? "0") !== 0) {
+        await expect(this.cartBadge).toContainText(currentCartItemCount);
+      }
+
+      this._cartCount = parseInt(currentCartItemCount);
     }
   }
 
-  // async verifyLatestItem(productKey: keyof typeof PRODUCT_IDS) {
+  async removeProduct(productKeys: (keyof typeof PRODUCT_IDS)[]) {
+    for (const productKey of productKeys) {
+      const productRemoveButton = this.page.locator(
+        ProductSelectors.getSelectors(productKey).removeButton,
+      );
 
-  //   const productQuantity = this.page.locator(
-  //     productRemoveButton +
-  //       "/ancestor::div[@class='cart_item']//div[@class='cart_quantity']",
-  //   );
+      await expect(productRemoveButton).toBeVisible();
+      await expect(productRemoveButton).toContainText("Remove");
+      await productRemoveButton.click();
 
-  //   await expect(this.hamburgerButton).toBeVisible();
-  //   await expect(this.textLogo).toBeVisible();
-  //   await expect(this.textLogo).toHaveText("Swag Labs");
-  //   await expect(this.cartButton).toBeVisible();
+      if (this._cartCount > 1) {
+        this._cartCount -= 1;
+        await expect(this.cartBadge).toBeVisible();
+        await expect(this.cartBadge).toContainText(this._cartCount.toString());
+      } else {
+        await expect(this.cartBadge).not.toBeVisible();
+      }
+    }
+  }
 
-  //   await expect(this.titleText).toBeVisible();
-  //   await expect(this.titleText).toHaveText("Your Cart");
+  async verifyCart() {
+    await expect(this.hamburgerButton).toBeVisible();
+    await expect(this.textLogo).toBeVisible();
+    await expect(this.textLogo).toHaveText("Swag Labs");
+    await expect(this.cartButton).toBeVisible();
 
-  //   await expect(this.cartQuantityText).toBeVisible();
-  //   await expect(this.cartQuantityText).toHaveText("QTY");
-  //   await expect(this.cartDescText).toBeVisible();
-  //   await expect(this.cartDescText).toHaveText("Description");
+    await expect(this.titleText).toBeVisible();
+    await expect(this.titleText).toHaveText("Your Cart");
 
-  //   await expect(productCard).toBeVisible();
+    await expect(this.cartQuantityText).toBeVisible();
+    await expect(this.cartQuantityText).toHaveText("QTY");
+    await expect(this.cartDescText).toBeVisible();
+    await expect(this.cartDescText).toHaveText("Description");
+  }
 
-  //   await expect(productQuantity).toBeVisible();
-  //   await expect(productQuantity).toHaveText("1");
+  async verifyCartItems(productKeys: (keyof typeof PRODUCT_IDS)[]) {
+    const cartItems = this.page.locator('[data-test="inventory-item"]');
+    const count = await cartItems.count();
+    expect(count).toBe(this._cartCount);
 
-  //   await expect(productName).toBeVisible();
-  //   await expect(productName).toContainText(productDetails.NAME);
+    for (const productKey of productKeys) {
+      const cart = await this.cartSelector(productKey);
+      const product = await this.productSelector(productKey);
+      const productData = PRODUCTS[productKey];
 
-  //   await expect(productDesc).toBeVisible();
-  //   await expect(productDesc).toContainText(productDetails.DESC);
+      await expect(cart.cartItem).toBeVisible();
 
-  //   await expect(productPrice).toBeVisible();
-  //   await expect(productPrice).toContainText(productDetails.PRICE);
+      await expect(cart.cartQuantity).toBeVisible();
+      await expect(cart.cartQuantity).toHaveText("1");
 
-  //   await expect(removeFromCartButton).toBeVisible();
-  //   await expect(removeFromCartButton).toContainText("Remove");
-  // }
+      await expect(cart.cartName).toBeVisible();
+      await expect(cart.cartName).toContainText(productData.name);
+
+      await expect(cart.cartDesc).toBeVisible();
+      await expect(cart.cartDesc).toContainText(productData.description);
+
+      await expect(cart.cartPrice).toBeVisible();
+      await expect(cart.cartPrice).toContainText(`$` + productData.price);
+
+      await expect(product.productRemoveButton).toBeVisible();
+      await expect(product.productRemoveButton).toContainText("Remove");
+    }
+  }
+
+  private async productSelector(productKey: keyof typeof PRODUCT_IDS) {
+    const selectors = ProductSelectors.getSelectors(productKey);
+
+    const productImage = this.page.locator(selectors.image);
+    const productName = this.page.locator(selectors.name);
+    const productDesc = this.page.locator(selectors.description);
+    const productPrice = this.page.locator(selectors.price);
+    const productAddToCart = this.page.locator(selectors.addToCartButton);
+    const productRemoveButton = this.page.locator(selectors.removeButton);
+
+    return {
+      productImage,
+      productName,
+      productDesc,
+      productPrice,
+      productAddToCart,
+      productRemoveButton,
+    };
+  }
+
+  private async cartSelector(productKey: keyof typeof PRODUCT_IDS) {
+    const selectors = CartSelectors.getSelectors(productKey);
+
+    const cartItem = this.page.locator(selectors.item);
+    const cartQuantity = this.page.locator(selectors.quantity);
+    const cartName = this.page.locator(selectors.name);
+    const cartDesc = this.page.locator(selectors.description);
+    const cartPrice = this.page.locator(selectors.price);
+
+    return {
+      cartItem,
+      cartQuantity,
+      cartName,
+      cartDesc,
+      cartPrice,
+    };
+  }
 }

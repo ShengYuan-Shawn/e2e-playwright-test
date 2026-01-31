@@ -9,7 +9,7 @@ export class LoginPage {
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
-  readonly loginErrorMessage: Locator;
+  readonly errorMessage: Locator;
 
   constructor(page: Page) {
     const Login = LOGIN_SELECTORS;
@@ -19,7 +19,7 @@ export class LoginPage {
     this.usernameInput = page.locator(Login.USERNAME_INPUT);
     this.passwordInput = page.locator(Login.PASSWORD_INPUT);
     this.loginButton = page.locator(Login.LOGIN_BUTTON);
-    this.loginErrorMessage = page.locator(Login.ERROR_MESSAGE);
+    this.errorMessage = page.locator(Login.ERROR_MESSAGE);
   }
 
   async verifyLoginPage() {
@@ -72,8 +72,8 @@ export class LoginPage {
   }
 
   async verifyErrorMessage(errorType: LoginErrorKey) {
-    await expect(this.loginErrorMessage).toBeVisible();
-    await expect(this.loginErrorMessage).toContainText(
+    await expect(this.errorMessage).toBeVisible();
+    await expect(this.errorMessage).toContainText(
       ERROR_MESSAGES.LOGIN[errorType],
     );
   }

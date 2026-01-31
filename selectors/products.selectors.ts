@@ -22,3 +22,30 @@ export class ProductSelectors {
     };
   }
 }
+
+export class CartSelectors {
+  static getSelectors(productId: keyof typeof PRODUCT_IDS) {
+    const product = PRODUCT_IDS[productId];
+    const container = `xpath=//button[@id="remove-${product}"]`;
+
+    return {
+      item: `${container}/ancestor::div[@class='cart_item']`,
+      quantity: `${container}/ancestor::div[@class='cart_item']//div[@class='cart_quantity']`,
+      name: `${container}/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_name']`,
+      description: `${container}/ancestor::div[@class='cart_item_label']//div[@class='inventory_item_desc']`,
+      price: `${container}/preceding-sibling::div[@class='inventory_item_price']`,
+    };
+  }
+}
+
+export class CheckoutSelectors {
+  static getSelectors() {
+    return {
+      card: "[data-test='inventory-item']",
+      quantity: "[data-test='item-quantity']",
+      name: "[class='inventory_item_name']",
+      description: "[class='inventory_item_desc']",
+      price: "[class='item_pricebar']",
+    };
+  }
+}
