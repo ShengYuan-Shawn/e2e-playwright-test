@@ -1,7 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { CommonUtils } from "../utils/commonUtils";
-
-import { LocatorsFactory } from "../factory/locatorsFactory";
+import { BASE_SELECTORS } from "../selectors";
 
 export class BasePage {
   readonly page: Page;
@@ -18,7 +17,7 @@ export class BasePage {
   readonly termsText: Locator;
 
   constructor(page: Page) {
-    const Base = LocatorsFactory.BASE_PAGE;
+    const Base = BASE_SELECTORS;
 
     this.page = page;
     this.commonUtils = new CommonUtils(page);
@@ -34,7 +33,7 @@ export class BasePage {
     this.termsText = page.locator(Base.TERMS_TEXT);
   }
 
-  async navaigateToCart() {
+  async navigateToCart() {
     await expect(this.cartButton).toBeVisible();
     await this.cartButton.click();
   }

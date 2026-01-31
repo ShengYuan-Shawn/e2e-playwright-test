@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import { testSetup } from "../../fixtures/testSetup";
 
-test.describe("Home Page", () => {
+test.describe.serial("Home Page", () => {
   testSetup("Verify Navigation Menu", async ({ loginPage, homePage }) => {
     await loginPage.enterValidUsername(process.env.VALID_USER as string);
     await loginPage.enterValidPassword(process.env.VALID_PASSWORD as string);

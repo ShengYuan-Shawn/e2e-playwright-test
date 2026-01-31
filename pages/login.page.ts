@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { LocatorsFactory } from "../factory/locatorsFactory";
+import { LOGIN_SELECTORS } from "../selectors/index";
+import { ERROR_MESSAGES, LoginErrorKey } from "../test-data/app";
 import { faker } from "@faker-js/faker";
 
 export class LoginPage {
@@ -8,25 +9,17 @@ export class LoginPage {
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
-  readonly loginErrorMessage: Locator;
-
-  private static readonly ERROR_MESSAGES = {
-    PASSWORD_REQUIRED: "Epic sadface: Password is required",
-    USERNAME_REQUIRED: "Epic sadface: Username is required",
-    USER_LOCKED: "Epic sadface: Sorry, this user has been locked out.",
-    INVALID_CREDENTIALS:
-      "Epic sadface: Username and password do not match any user in this service",
-  } as const;
+  readonly errorMessage: Locator;
 
   constructor(page: Page) {
-    const Login = LocatorsFactory.LOGIN_PAGE;
+    const Login = LOGIN_SELECTORS;
 
     this.page = page;
     this.loginLogo = page.locator(Login.LOGIN_LOGO);
     this.usernameInput = page.locator(Login.USERNAME_INPUT);
     this.passwordInput = page.locator(Login.PASSWORD_INPUT);
     this.loginButton = page.locator(Login.LOGIN_BUTTON);
-    this.loginErrorMessage = page.locator(Login.ERROR_MESSAGE);
+    this.errorMessage = page.locator(Login.ERROR_MESSAGE);
   }
 
   async verifyLoginPage() {
@@ -78,10 +71,10 @@ export class LoginPage {
     await this.loginButton.click();
   }
 
-  async verifyErrorMessage(errorType: keyof typeof LoginPage.ERROR_MESSAGES) {
-    await expect(this.loginErrorMessage).toBeVisible();
-    await expect(this.loginErrorMessage).toContainText(
-      LoginPage.ERROR_MESSAGES[errorType]
+  async verifyErrorMessage(errorType: LoginErrorKey) {
+    await expect(this.errorMessage).toBeVisible();
+    await expect(this.errorMessage).toContainText(
+      ERROR_MESSAGES.LOGIN[errorType],
     );
   }
 }

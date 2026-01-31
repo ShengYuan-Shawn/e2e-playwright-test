@@ -2,7 +2,7 @@ import { test } from "@playwright/test";
 import { CommonUtils } from "../utils/commonUtils";
 import { LoginPage } from "../pages/login.page";
 import { HomePage } from "../pages/home.page";
-import { CartPage } from "../pages/cart.page";
+import { CartPage } from "../pages/products.page";
 import { CheckoutPage } from "../pages/checkout.page";
 
 export interface TestFixtures {

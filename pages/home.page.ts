@@ -1,28 +1,21 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
-import { CommonUtils } from "../utils/commonUtils";
-import { LocatorsFactory } from "../factory/locatorsFactory";
+import { HOME_SELECTORS } from "../selectors/index";
+import {
+  NAV_ITEMS,
+  FILTER_OPTIONS,
+  SOCIAL_ITEMS,
+  FOOTER,
+} from "../test-data/app";
 
 export class HomePage extends BasePage {
   readonly productFilterButton: Locator;
   readonly productPrice: Locator;
 
-  private static readonly NAVIGATION_ITEMS = [
-    "inventory",
-    "about",
-    "logout",
-    "reset",
-  ];
-  private static readonly FILTER_OPTIONS = ["az", "za", "lohi", "hilo"];
-  private static readonly SOCIAL_ITEMS = ["twitter", "facebook", "linkedin"];
-
-  private static readonly COPYRIGHT_TEXT =
-    "© 2025 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy";
-
   constructor(page: Page) {
     super(page); // Initialize BasePage
 
-    const Home = LocatorsFactory.HOME_PAGE;
+    const Home = HOME_SELECTORS;
 
     this.productFilterButton = page.locator(Home.PRODUCT_FILTER_BUTTON);
     this.productPrice = page.locator(Home.PRODUCT_PRICE);
@@ -59,7 +52,7 @@ export class HomePage extends BasePage {
 
   async verifyNavigationList() {
     await expect(this.closeButton).toBeVisible();
-    for (const item of HomePage.NAVIGATION_ITEMS) {
+    for (const item of NAV_ITEMS) {
       await expect(this.navigationListItem(item)).toBeVisible();
     }
   }
@@ -72,7 +65,7 @@ export class HomePage extends BasePage {
   async verifyProductFilter() {
     await expect(this.productFilterButton).toBeVisible();
     await this.productFilterButton.click();
-    for (const item of HomePage.FILTER_OPTIONS) {
+    for (const item of FILTER_OPTIONS) {
       await expect(this.productFilterListItem(item)).toBeAttached();
       await this.verifyFilterOptionText(item);
     }
@@ -87,7 +80,7 @@ export class HomePage extends BasePage {
     };
 
     await expect(this.productFilterListItem(option)).toHaveText(
-      optionTextMap[option]
+      optionTextMap[option],
     );
   }
 
@@ -102,11 +95,11 @@ export class HomePage extends BasePage {
 
   async verifyProductListSequence(
     // Validates product list sorting order - defaults to ascending if not specified
-    expectedOrder: "ascending" | "descending" = "ascending"
+    expectedOrder: "ascending" | "descending" = "ascending",
   ) {
     const itemPrices = await this.productPrice.allTextContents();
     const numericPrice = itemPrices.map((price) =>
-      parseFloat(price.replace(/[$,\s]/g, ""))
+      parseFloat(price.replace(/[$,\s]/g, "")),
     );
 
     expect(this.isCorrectOrder(numericPrice, expectedOrder)).toBeTruthy();
@@ -114,7 +107,7 @@ export class HomePage extends BasePage {
 
   private isCorrectOrder(
     prices: number[],
-    order: "ascending" | "descending"
+    order: "ascending" | "descending",
   ): boolean {
     // Compare adjacent elements to verify sort order (iterate to n-1 to avoid index out of bounds)
     for (let i = 0; i < prices.length - 1; i++) {
@@ -131,10 +124,10 @@ export class HomePage extends BasePage {
   async verifyFooter() {
     await this.commonUtils.scrollToBottom();
     await expect(this.pageFooter).toBeVisible();
-    for (const item of HomePage.SOCIAL_ITEMS) {
+    for (const item of SOCIAL_ITEMS) {
       await expect(this.socialListItem(item)).toBeVisible();
     }
     await expect(this.termsText).toBeVisible();
-    await expect(this.termsText).toHaveText(HomePage.COPYRIGHT_TEXT);
+    await expect(this.termsText).toHaveText(FOOTER.COPYRIGHT_TEXT);
   }
 }
