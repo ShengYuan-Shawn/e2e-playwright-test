@@ -1,4 +1,3 @@
-
 # Playwright
 node_modules/
 /test-results/
@@ -7,8 +6,17 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
+# Allure Reports
+allure-results/
+allure-report/
+
+# Test Data
+test-data/
+
 # Env
 .env
+.env.local
+.env.*.local
 
 # Screenshots
 screenshots/
@@ -21,3 +29,5 @@ npm-debug.log*
 .DS_Store
 .vscode/
 .idea/
+*.swp
+*.swo
