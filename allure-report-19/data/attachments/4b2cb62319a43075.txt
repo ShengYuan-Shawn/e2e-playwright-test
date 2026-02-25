@@ -1,0 +1,6 @@
+Checkout has 1 items
+Item 1: Sauce Labs Backpack - $29.99 (Qty: 1)
+Expected subtotal for 1 items: $29.99
+Actual subtotal from page: $29.99
+Tax: $2.40
+Expected total: $32.39

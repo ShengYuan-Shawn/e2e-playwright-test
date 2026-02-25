@@ -1,0 +1,7 @@
+Checkout has 2 items
+Item 1: Sauce Labs Backpack - $29.99 (Qty: 1)
+Item 2: Sauce Labs Bolt T-Shirt - $15.99 (Qty: 1)
+Expected subtotal for 2 items: $45.98
+Actual subtotal from page: $45.98
+Tax: $3.68
+Expected total: $49.66
