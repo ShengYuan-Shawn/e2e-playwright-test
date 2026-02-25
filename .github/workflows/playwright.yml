@@ -1,4 +1,4 @@
-name: 🎭 E2E Playwright Tests with Allure Report
+name: 🎭 E2E Playwright Tests
 
 on:
   workflow_dispatch:
