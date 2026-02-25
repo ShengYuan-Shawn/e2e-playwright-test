@@ -1,4 +1,4 @@
-name: 🎭 E2E Playwright Tests
+name: 🎭 E2E Playwright Tests with Allure Report
 
 on:
   workflow_dispatch:
@@ -52,7 +52,7 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: 📊 Upload Allure Report
+      - name: 📊 Upload Allure Report Artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: ${{ !cancelled() }}
         with:
@@ -60,10 +60,20 @@ jobs:
           path: allure-report/
           retention-days: 30
 
+      - name: 🚀 Deploy Allure Report to GitHub Pages
+        if: ${{ !cancelled() }}
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          destination_dir: allure-report-${{ github.run_number }}
+
       - name: ✅ Test Summary
         if: ${{ !cancelled() }}
         run: |
           echo "## 📊 Test Reports Generated" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Playwright Report: Check Artifacts → playwright-report" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Allure Report: Check Artifacts → allure-report-${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Playwright Report**: Check Artifacts → playwright-report" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Allure Report**: Check Artifacts → allure-report-${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 **GitHub Pages**: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report-${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
