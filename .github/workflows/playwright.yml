@@ -60,13 +60,11 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      - name: 🚀 Deploy Allure Report to GitHub Pages
+      - name: 📊 Publish Test Report with CTRF
         if: ${{ !cancelled() }}
-        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
+        uses: ctrf-io/github-test-reporter@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
-          destination_dir: ./
+          test-results-path: 'ctrf/ctrf-report.json'
 
       - name: ✅ Test Summary
         if: ${{ !cancelled() }}
@@ -75,5 +73,4 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Playwright Report**: Check Artifacts → playwright-report" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Allure Report**: Check Artifacts → allure-report-${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🌐 **GitHub Pages**: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report-${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **CTRF Report**: Published to GitHub (see Test Report tab)" >> $GITHUB_STEP_SUMMARY
