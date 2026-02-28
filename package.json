@@ -8,7 +8,7 @@
     "test:login": "playwright test tests/login",
     "test:home": "playwright test tests/home",
     "test:cart": "playwright test tests/cart",
-    "test:summary": "npx ts-node scripts/test-summary.ts",
+    "test:summary": "npx ts-node scripts/test-summary.js",
     "allure:report": "allure generate ./allure-results --clean -o ./allure-report",
     "allure:open": "allure open ./allure-report"
   },
