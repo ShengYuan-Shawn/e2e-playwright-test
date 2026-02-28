@@ -67,10 +67,10 @@ try {
 ### Test Statistics
 | Status | Count |
 |--------|-------|
-| ✅ Passed | ${passed} |
-| ❌ Failed | ${failed} |
-| ⏭️ Skipped | ${skipped} |
-| 📝 Total | ${total} |
+| ✅ - Passed | ${passed} |
+| ❌ - Failed | ${failed} |
+| ⏭️ - Skipped | ${skipped} |
+| 📝 - Total | ${total} |
 
 ### Success Rate
 ${total > 0 && passed > 0 ? `🎯 ${((passed / total) * 100).toFixed(2)}% Success Rate` : total === 0 ? '⚠️ No tests found' : '❌ All tests failed'}
