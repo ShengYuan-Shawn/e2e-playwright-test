@@ -60,17 +60,6 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      - name: 📊 Publish Test Report with CTRF
+      - name: 📊 Generate Test Summary
         if: ${{ !cancelled() }}
-        uses: ctrf-io/github-test-reporter@024bc4b64d997ca9da86833c6b9548c55c620e40
-        with:
-          report-path: 'ctrf/ctrf-report.json'
-
-      - name: ✅ Test Summary
-        if: ${{ !cancelled() }}
-        run: |
-          echo "## 📊 Test Reports Generated" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ **Playwright Report**: Check Artifacts → playwright-report" >> $GITHUB_STEP_SUMMARY
-          echo "✅ **Allure Report**: Check Artifacts → allure-report-${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "✅ **CTRF Report**: Published to GitHub (see Test Report tab)" >> $GITHUB_STEP_SUMMARY
+        run: npm run test:summary

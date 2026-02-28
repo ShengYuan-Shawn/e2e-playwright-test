@@ -8,6 +8,7 @@
     "test:login": "playwright test tests/login",
     "test:home": "playwright test tests/home",
     "test:cart": "playwright test tests/cart",
+    "test:summary": "npx ts-node scripts/test-summary.ts",
     "allure:report": "allure generate ./allure-results --clean -o ./allure-report",
     "allure:open": "allure open ./allure-report"
   },
@@ -17,9 +18,11 @@
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",
     "@playwright/test": "^1.55.0",
-    "@types/node": "^24.5.2",
+    "@types/node": "^24.11.0",
     "allure-commandline": "^2.37.0",
-    "allure-playwright": "^3.5.0"
+    "allure-playwright": "^3.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "dotenv": "^17.2.2"
